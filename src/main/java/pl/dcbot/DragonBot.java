@@ -73,6 +73,7 @@ public class DragonBot extends JavaPlugin {
         api.addListener(new MessageCreateListener());
         api.addSlashCommandCreateListener(new SlashCommandsListener());
         api.addMessageComponentCreateListener(new MessageComponentCreateListener());
+        api.addSelectMenuChooseListener(new SelectMenuListener());
 
         BootstrapManager.initialize(api);
     }

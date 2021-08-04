@@ -12,10 +12,8 @@ import static pl.dcbot.Managers.BootstrapManager.*;
 
 public class ReactionListener implements ReactionAddListener, ReactionRemoveListener {
 
-    //TODO upload to github
     //TODO reaction roles - menu
     //TODO reaction colors - menu
-
 
     @Override
     public void onReactionRemove(ReactionRemoveEvent e) {

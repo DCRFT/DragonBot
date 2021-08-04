@@ -6,6 +6,8 @@ import org.javacord.api.entity.activity.ActivityType;
 import org.javacord.api.entity.message.MessageBuilder;
 import org.javacord.api.entity.message.component.ActionRow;
 import org.javacord.api.entity.message.component.Button;
+import org.javacord.api.entity.message.component.SelectMenu;
+import org.javacord.api.entity.message.component.SelectMenuOption;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.UserStatus;
@@ -226,25 +228,34 @@ public class BootstrapManager {
         }
 
         if (!ConfigManager.getDataFile().getBoolean("created.channel_pingi")) {
-            EmbedBuilder roles = new EmbedBuilder()
-                    .setAuthor(plugin.getConfig().getString("embeds.roles.author"))
-                    .addField(plugin.getConfig().getString("embeds.roles.field1.name"), plugin.getConfig().getString("embeds.roles.field1.value"))
-                    .addField(plugin.getConfig().getString("embeds.roles.field2.name"), plugin.getConfig().getString("embeds.roles.field2.value"))
-                    .addField(plugin.getConfig().getString("embeds.roles.field3.name"), plugin.getConfig().getString("embeds.roles.field3.value"))
-                    .addField(plugin.getConfig().getString("embeds.roles.field4.name"), plugin.getConfig().getString("embeds.roles.field4.value"))
-                    .setColor(Color.GREEN)
-                    .setFooter(plugin.getConfig().getString("embeds.footer.text")
-                            .replace("{version}", plugin.getDescription().getVersion()).replace("{time}", time),
-                    plugin.getConfig().getString("embeds.footer.icon"));
-            long roles_id = server.getTextChannelById(channel_pingi).get().sendMessage(roles).join().getId();
-            ConfigManager.getDataFile().set("ids.roles", roles_id);
-            plugin.saveConfig();
+
+            SelectMenu selectMenu = SelectMenu.create("roles", "Wybierz role", 0, 3,  Arrays.asList(
+                    SelectMenuOption.create("Ogłoszenia", "OgłoszeniaA", "OgłoszeniaAA"),
+                    SelectMenuOption.create("Eventy", "EventyA", "EventyAA"),
+                    SelectMenuOption.create("Zmiany", "ZmianyA", "ZmianyAA")
+                    ));
+
             try {
-                for(String emoji : plugin.getConfig().getStringList("embeds.roles.reactions"))
-                server.getTextChannelById(channel_pingi).get().getMessageById(roles_id).get().addReaction(emoji);
+                long roles_id = new MessageBuilder().setEmbed(new EmbedBuilder()
+                        .setAuthor(plugin.getConfig().getString("embeds.roles.author"))
+                        .addField(plugin.getConfig().getString("embeds.roles.field1.name"), plugin.getConfig().getString("embeds.roles.field1.value"))
+                        .addField(plugin.getConfig().getString("embeds.roles.field2.name"), plugin.getConfig().getString("embeds.roles.field2.value"))
+                        .addField(plugin.getConfig().getString("embeds.roles.field3.name"), plugin.getConfig().getString("embeds.roles.field3.value"))
+                        .addField(plugin.getConfig().getString("embeds.roles.field4.name"), plugin.getConfig().getString("embeds.roles.field4.value"))
+                        .setColor(Color.GREEN)
+                        .setFooter(plugin.getConfig().getString("embeds.footer.text")
+                                .replace("{version}", plugin.getDescription().getVersion()).replace("{time}", time),
+                        plugin.getConfig().getString("embeds.footer.icon"))).addComponents(ActionRow.of(
+                             selectMenu
+                        )
+                ).send(server.getTextChannelById(channel_pingi).get()).get().getId();
+
+                ConfigManager.getDataFile().set("ids.roles", roles_id);
+                plugin.saveConfig();
+
             } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
                 ErrorUtil.logError(ErrorReason.DISCORD);
+                e.printStackTrace();
             }
             ConfigManager.getDataFile().set("created.channel_pingi", true);
         }

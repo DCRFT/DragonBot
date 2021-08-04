@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
+import org.javacord.api.interaction.SelectMenuInteraction;
 import org.javacord.api.interaction.SlashCommandInteraction;
 import pl.dcbot.Utils.ColorUtil;
 
@@ -17,6 +18,11 @@ public class MessageManager {
         } else if (player instanceof CommandSender) {
             ((CommandSender) player).sendMessage(ColorUtil.colorize(LanguageManager.getMessage(key)));
         }
+    }
+    public static void sendMessage(SlashCommandInteraction command, String key) {
+        command.createImmediateResponder()
+                .setContent(LanguageManager.getMessage(key))
+                .respond();
     }
     public static void sendRawMessage(SlashCommandInteraction command, String message) {
         command.createImmediateResponder()
@@ -33,9 +39,14 @@ public class MessageManager {
                 .setContent(message)
                 .respond();
     }
-    public static void sendMessage(SlashCommandInteraction command, String key) {
-        command.createImmediateResponder()
+    public static void sendMessage(SelectMenuInteraction menu, String key) {
+        menu.createImmediateResponder()
                 .setContent(LanguageManager.getMessage(key))
+                .respond();
+    }
+    public static void sendRawMessage(SelectMenuInteraction menu, String message) {
+        menu.createImmediateResponder()
+                .setContent(message)
                 .respond();
     }
     public static void sendMessage(User user, String message) {
