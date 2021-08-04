@@ -1,0 +1,137 @@
+bot:
+  token: <your token>
+  description: "\uD83D\uDC32 DragonBot {version}"
+serverconfig:
+  server:
+  channels:
+    glowny:
+    rejestracja:
+    rejestracja_pomoc:
+    przenoszenie_rang:
+    zmiana_nicku:
+    zgloszenia_s12:
+    zgloszenia_s16:
+    bot:
+    banykicki:
+    wiadpotw:
+    wsparcie:
+    role:
+    ogloszenia:
+    zmiany:
+    eventy:
+    testowy:
+    logi:
+  voicechannels:
+    prywatne:
+  categories:
+    prywatne:
+    zgl_otwarte:
+    zgl_zamkniete:
+    propo_otwarte:
+    propo_zamkniete:
+  emojis:
+    plus_jeden:
+    minus_jeden:
+    plus_jeden_name: "oj_tak_plus_jeden"
+    minus_jeden_name: "oj_nie_minus_jeden"
+  roles:
+    gracz:
+    vip:
+    svip:
+    mvip:
+    evip:
+    pomocnik:
+    moderator:
+    viceadministrator:
+    administrator:
+    wlasciciel:
+    rola_ogloszenia:
+    rola_eventy:
+    rola_zmiany:
+    rola_wyciszony:
+report_sound: BLOCK_ANVIL_LAND
+embeds:
+  footer:
+    text: "DragonBot {version} • {time}"
+    icon: "http://dcrft.pl/uploads/5bb8d859bb152e08470e24f2/dclogo3_shadow_alpha.png"
+  reports:
+    author: "Zgłoszenia"
+    field:
+      name: "Aby utworzyć zgłoszenie, kliknij przycisk."
+      value: "Zostanie utworzony nowy kanał zgłoszenia."
+    button:
+      id: "new_report"
+      label: "Utwórz zgłoszenie"
+    new_report:
+      author: "Zgłoszenie #"
+      field1:
+        name: "Cześć! Dziękujemy za otwarcie zgłoszenia."
+        value: "Opisz tu swój problem. Postaramy się odpowiedzieć jak najszybciej!"
+      field2:
+        name: "Chcesz zamknąć zgłoszenie?"
+        value: "Użyj przycisku"
+      button:
+        id: "close_report"
+        label: "Zamknij zgłoszenie"
+        closed:
+          id: "report_closed"
+          label: "Zgłoszenie zamknięte"
+      channel_name: "⟨❗⟩zgloszenie-"
+  suggestions:
+    author: "Propozycje"
+    field:
+      name: "Aby utworzyć propozycję, kliknij przycisk."
+      value: "Zostanie utworzony nowy kanał propozycji."
+    button:
+      id: "success"
+      label: "Utwórz propozycję"
+    new_suggestion:
+      author: "Propozycja #"
+      field1:
+        name: "Cześć! Dziękujemy za utworzenie propozycji."
+        value: "Opisz tu swoją sugestię. Postaramy się odpowiedzieć jak najszybciej!"
+      field2:
+        name: "Propozycja jest widoczna dla każdego."
+        value: "Administracja może ją odrzucić bądź zaakceptować."
+      button_accept:
+        id: "accept_suggestion"
+        label: "Zaakceptuj propozycję"
+        closed:
+          id: "report_closed"
+          label: "Propozycja zaakceptowana"
+      button_reject:
+        id: "reject_suggestion"
+        label: "Odrzuć propozycję"
+        closed:
+          id: "report_closed"
+          label: "Propozycja odrzucona"
+      button_close:
+        id: "close_suggestion"
+        label: "Zamknij propozycję"
+        closed:
+          id: "report_closed"
+          label: "Propozycja zamknięta"
+      accepted: "Propozycja została zaakceptowana przez"
+      rejected: "Propozycja została odrzucona przez"
+      closed: "Propozycja została zamknięta przez"
+      channel_name: "⟨🎉⟩propozycja-"
+  roles:
+    author: "Wzmianki"
+    field1:
+      name: "Po dodaniu reakcji zostanie nadana rola."
+      value: "Po jej usunięciu zostanie cofnięta."
+    field2:
+      name: "📜"
+      value: "ogłoszenia"
+    field3:
+      name: "🎆"
+      value: "zmiany"
+    field4:
+      name: "🎉️"
+      value: "eventy"
+    reactions:
+      - "📜"
+      - "🎆"
+      - "🎉"
+punishments:
+  default_reason: "brak powodu"

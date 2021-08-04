@@ -1,0 +1,14 @@
+name: DragonBot
+version: ${project.version}-b${buildNumber}
+main: pl.dcbot.DragonBot
+api-version: 1.16
+commands:
+  dclink:
+    description: a
+  zglos:
+    description: Zglos gracza lub problem
+  discord:
+    description: Zglos gracza lub problem
+  dcb:
+    description: test
+    permission: dcb.adm
