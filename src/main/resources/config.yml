@@ -49,6 +49,16 @@ serverconfig:
     rola_eventy:
     rola_zmiany:
     rola_wyciszony:
+    colors:
+      default_pink:
+      blue:
+      green:
+      yellow:
+      orange:
+      purple:
+      grey:
+      black:
+      white:
 report_sound: BLOCK_ANVIL_LAND
 embeds:
   footer:
@@ -117,21 +127,8 @@ embeds:
       channel_name: "⟨🎉⟩propozycja-"
   roles:
     author: "Wzmianki"
-    field1:
-      name: "Po dodaniu reakcji zostanie nadana rola."
-      value: "Po jej usunięciu zostanie cofnięta."
-    field2:
-      name: "📜"
-      value: "ogłoszenia"
-    field3:
-      name: "🎆"
-      value: "zmiany"
-    field4:
-      name: "🎉️"
-      value: "eventy"
-    reactions:
-      - "📜"
-      - "🎆"
-      - "🎉"
+    field:
+      name: "Wybierz rolę/e dotyczącą/e wzmianek."
+      value: "Kliknij w menu poniżej"
 punishments:
   default_reason: "brak powodu"

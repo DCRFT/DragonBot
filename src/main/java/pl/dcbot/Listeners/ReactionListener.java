@@ -20,16 +20,7 @@ public class ReactionListener implements ReactionAddListener, ReactionRemoveList
         if (e.getUser().get().isYourself()) {
             return;
         } try {
-            if (e.getChannel().getId() == channel_pingi) {
-                if (e.requestReaction().get().get().getEmoji().equalsEmoji("\uD83D\uDCDC")) { //ogloszenia
-                    e.getUser().get().removeRole(e.getServer().get().getRoleById(role_ogloszenia).get());
-                } else if (e.requestReaction().get().get().getEmoji().equalsEmoji("\uD83C\uDF86")) { //zmiany
-                    e.getUser().get().removeRole(e.getServer().get().getRoleById(role_zmiany).get());
-                } else if (e.requestReaction().get().get().getEmoji().equalsEmoji("\uD83C\uDF89")) { //eventy
-                    e.getUser().get().removeRole(e.getServer().get().getRoleById(role_eventy).get());
-                }
-
-            } else if (e.getChannel().asTextChannel().isPresent()
+            if (e.getChannel().asTextChannel().isPresent()
                     && e.getChannel().asServerTextChannel().get().getCategory().isPresent()
                     && e.getChannel().asServerTextChannel().get().getCategory().get().getId() == category_propo_otwarte) {
                 if(e.requestReaction().get().isPresent()){
@@ -56,16 +47,7 @@ public class ReactionListener implements ReactionAddListener, ReactionRemoveList
         if (e.getUser().get().isYourself()) {
             return;
         } try {
-            if (e.getChannel().getId() == channel_pingi) {
-                if (e.requestReaction().get().get().getEmoji().equalsEmoji("\uD83D\uDCDC")) { //ogloszenia
-                    e.getUser().get().addRole(e.getServer().get().getRoleById(role_ogloszenia).get());
-                } else if (e.requestReaction().get().get().getEmoji().equalsEmoji("\uD83C\uDF86")) { //zmiany
-                    e.getUser().get().addRole(e.getServer().get().getRoleById(role_zmiany).get());
-                } else if (e.requestReaction().get().get().getEmoji().equalsEmoji("\uD83C\uDF89")) { //eventy
-                    e.getUser().get().addRole(e.getServer().get().getRoleById(role_eventy).get());
-                }
-
-            } else if (e.getChannel().asTextChannel().isPresent()
+            if (e.getChannel().asTextChannel().isPresent()
                     && e.getChannel().asServerTextChannel().get().getCategory().isPresent()
                     && e.getChannel().asServerTextChannel().get().getCategory().get().getId() == category_propo_otwarte) {
                 if(e.requestReaction().get().isPresent()){

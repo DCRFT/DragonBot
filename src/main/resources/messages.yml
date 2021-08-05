@@ -197,6 +197,29 @@ discord_commands:
   music:
     name: "utwór"
     description: "Nazwa utworu lub adres URL YouTube."
+menus:
+  color:
+    title: "Wybierz kolor"
+    default_pink: "Różowy (domyślny)"
+    blue: "Niebieski"
+    green: "Zielony"
+    yellow: "Żółty"
+    orange: "Pomarańczowy"
+    purple: "Fioletowy"
+    grey: "Szary"
+    black: "Czarny"
+    white: "Biały"
+  roles:
+    title: "Wybierz rolę/e"
+    announcements:
+      label: "Ogłoszenia"
+      description: "Nadaj powiedomienie o ogłoszeniach."
+    events:
+      label: "Eventy"
+      description: "Nadaj powiedomienie o eventach."
+    changes:
+      label: "Zmiany"
+      description: "Nadaj powiedomienie o zmianach."
 plugin:
   header: "§e--------------------------------------------"
   footer: "§e--------------------------------------------"

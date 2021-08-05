@@ -78,6 +78,17 @@ public class BootstrapManager {
 
     public static final long role_wyciszony = plugin.getConfig().getLong("serverconfig.roles.rola_wyciszony");
 
+    public static final long role_color_default_pink = plugin.getConfig().getLong("serverconfig.roles.colors.default_pink");
+    public static final long role_color_blue = plugin.getConfig().getLong("serverconfig.roles.colors.blue");
+    public static final long role_color_green = plugin.getConfig().getLong("serverconfig.roles.colors.green");
+    public static final long role_color_yellow = plugin.getConfig().getLong("serverconfig.roles.colors.yellow");
+    public static final long role_color_orange = plugin.getConfig().getLong("serverconfig.roles.colors.orange");
+    public static final long role_color_purple = plugin.getConfig().getLong("serverconfig.roles.colors.purple");
+    public static final long role_color_grey = plugin.getConfig().getLong("serverconfig.roles.colors.grey");
+    public static final long role_color_black = plugin.getConfig().getLong("serverconfig.roles.colors.black");
+    public static final long role_color_white = plugin.getConfig().getLong("serverconfig.roles.colors.white");
+
+
     public static Server server;
 
     public static DiscordApi api = DragonBot.getApi();
@@ -129,7 +140,18 @@ public class BootstrapManager {
                 role_ogloszenia,
                 role_eventy,
                 role_zmiany,
-                role_wyciszony);
+                role_wyciszony,
+
+                role_color_default_pink,
+                role_color_blue,
+                role_color_green,
+                role_color_green,
+                role_color_yellow,
+                role_color_orange,
+                role_color_purple,
+                role_color_grey,
+                role_color_black,
+                role_color_white);
         if(!api.getServerById(serwer).isPresent()){
             ErrorUtil.logError(LanguageManager.getMessage("errors.configuration.server") + serwer);
             return false;
@@ -229,19 +251,16 @@ public class BootstrapManager {
 
         if (!ConfigManager.getDataFile().getBoolean("created.channel_pingi")) {
 
-            SelectMenu selectMenu = SelectMenu.create("roles", "Wybierz role", 0, 3,  Arrays.asList(
-                    SelectMenuOption.create("Ogłoszenia", "OgłoszeniaA", "OgłoszeniaAA"),
-                    SelectMenuOption.create("Eventy", "EventyA", "EventyAA"),
-                    SelectMenuOption.create("Zmiany", "ZmianyA", "ZmianyAA")
+            SelectMenu selectMenu = SelectMenu.create("roles", LanguageManager.getMessage("menus.roles.title"), 0, 3,  Arrays.asList(
+                    SelectMenuOption.create(LanguageManager.getMessage("menus.roles.announcements.label"), "announcements_id", LanguageManager.getMessage("menus.roles.announcements.description")),
+                    SelectMenuOption.create(LanguageManager.getMessage("menus.roles.events.label"), "events_id", LanguageManager.getMessage("menus.roles.events.description")),
+                    SelectMenuOption.create(LanguageManager.getMessage("menus.roles.changes.label"), "changes_id", LanguageManager.getMessage("menus.roles.changes.description"))
                     ));
 
             try {
                 long roles_id = new MessageBuilder().setEmbed(new EmbedBuilder()
                         .setAuthor(plugin.getConfig().getString("embeds.roles.author"))
-                        .addField(plugin.getConfig().getString("embeds.roles.field1.name"), plugin.getConfig().getString("embeds.roles.field1.value"))
-                        .addField(plugin.getConfig().getString("embeds.roles.field2.name"), plugin.getConfig().getString("embeds.roles.field2.value"))
-                        .addField(plugin.getConfig().getString("embeds.roles.field3.name"), plugin.getConfig().getString("embeds.roles.field3.value"))
-                        .addField(plugin.getConfig().getString("embeds.roles.field4.name"), plugin.getConfig().getString("embeds.roles.field4.value"))
+                        .addField(plugin.getConfig().getString("embeds.roles.field.name"), plugin.getConfig().getString("embeds.roles.field.value"))
                         .setColor(Color.GREEN)
                         .setFooter(plugin.getConfig().getString("embeds.footer.text")
                                 .replace("{version}", plugin.getDescription().getVersion()).replace("{time}", time),
@@ -258,6 +277,42 @@ public class BootstrapManager {
                 e.printStackTrace();
             }
             ConfigManager.getDataFile().set("created.channel_pingi", true);
+        }
+
+        if (!ConfigManager.getDataFile().getBoolean("created.channel_colors")) {
+
+            SelectMenu selectMenu = SelectMenu.create("colors", LanguageManager.getMessage("menus.colors.title"), 0, 1,  Arrays.asList(
+                    SelectMenuOption.create("❌️" + LanguageManager.getMessage("menus.color.default_pink"), "default_pink"),
+                    SelectMenuOption.create("\uD83D\uDFE6️" + LanguageManager.getMessage("menus.color.blue"), "blue"),
+                    SelectMenuOption.create("\uD83D\uDFE9️" + LanguageManager.getMessage("menus.color.green"), "green"),
+                    SelectMenuOption.create("\uD83D\uDFE8️" + LanguageManager.getMessage("menus.color.yellow"), "yellow"),
+                    SelectMenuOption.create("\uD83D\uDFE7️" + LanguageManager.getMessage("menus.color.orange"), "orange"),
+                    SelectMenuOption.create("\uD83D\uDFEA️" + LanguageManager.getMessage("menus.color.purple"), "purple"),
+                    SelectMenuOption.create("⬛️" + LanguageManager.getMessage("menus.color.grey"), "grey"),
+                    SelectMenuOption.create("\uD83D\uDD33️" + LanguageManager.getMessage("menus.color.black"), "black"),
+                    SelectMenuOption.create("⬜️" + LanguageManager.getMessage("menus.color.white"), "white")
+            ));
+
+            try {
+                long roles_id = new MessageBuilder().setEmbed(new EmbedBuilder()
+                        .setAuthor(plugin.getConfig().getString("embeds.roles.author"))
+                        .addField(plugin.getConfig().getString("embeds.roles.field.name"), plugin.getConfig().getString("embeds.roles.field.value"))
+                        .setColor(Color.GREEN)
+                        .setFooter(plugin.getConfig().getString("embeds.footer.text")
+                                        .replace("{version}", plugin.getDescription().getVersion()).replace("{time}", time),
+                                plugin.getConfig().getString("embeds.footer.icon"))).addComponents(ActionRow.of(
+                        selectMenu
+                        )
+                ).send(server.getTextChannelById(channel_pingi).get()).get().getId();
+
+                ConfigManager.getDataFile().set("ids.colors", roles_id);
+                plugin.saveConfig();
+
+            } catch (InterruptedException | ExecutionException e) {
+                ErrorUtil.logError(ErrorReason.DISCORD);
+                e.printStackTrace();
+            }
+            ConfigManager.getDataFile().set("created.channel_colors", true);
         }
         MuteManager.startListening();
         if(api.getServerSlashCommands(server) == null){
