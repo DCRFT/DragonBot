@@ -1,6 +1,7 @@
 prefix: "§e§lDragon§6§lCraft §e» "
 notfound: "§cNie ma takiej komendy. Użyj §e/info§c, aby dowiedzieć się więcej o dostępnych komendach."
 console_error: "Tej komendy nie można wywołać z konsoli."
+dm_error: "⟨❗⟩ Hej! Nie działam w wiadomościach prywatnych."
 activity:
   connecting: "Uruchamianie..."
   restart: "Wyłączanie..."
@@ -145,6 +146,9 @@ dclink:
   error: "⟨❗⟩ Wystąpił problem podczas rejestracji. Skontaktuj się z administracją."
   success: "{user}, połączyłem twoje konto Minecraft **{minecraft}** z serwerem Discord **DragonCraft**."
 cake: "\uD83E\uDD6E Mniam!"
+code:
+  success: "Twój kod:"
+  error: "Wygenerowałeś już kod!"
 ping: "Hej! **Jestem DragonBot**!\n\n**Jestem tu po to, by**:\n » powitać Cię, gdy wejdziesz na serwer,\n » połączyć twoje konto na serwerze Minecraft z kontem na Discord,\n » powiadomić Cię, gdy dostaniesz bana lub zostaniesz wyrzucony z serwera Discord,\n » odtwarzać dla Ciebie muzykę (zob. kanał {bot}\n » upiec Ci ciasto po /cake."
 discord_commands:
   ban:

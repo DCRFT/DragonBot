@@ -46,7 +46,7 @@ public class CommandManager implements CommandExecutor {
                     sender.sendMessage("§e§lDragon§a§lBot " + plugin.getDescription().getVersion() + "\n");
                     MessageManager.sendMessageList(sender, "pluginhelp.contents");
                 }
-                if (args[0].equalsIgnoreCase("przeladuj") ||args[0].equalsIgnoreCase("przeładuj") || args[0].equalsIgnoreCase("reload")) {
+                else if (args[0].equalsIgnoreCase("przeladuj") ||args[0].equalsIgnoreCase("przeładuj") || args[0].equalsIgnoreCase("reload")) {
                     plugin.reloadConfig();
                     BootstrapManager.reconnect();
                     LanguageManager.load();
