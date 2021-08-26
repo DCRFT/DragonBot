@@ -150,6 +150,7 @@ code:
   success: "Twój kod:"
   error: "Wygenerowałeś już kod!"
 ping: "Hej! **Jestem DragonBot**!\n\n**Jestem tu po to, by**:\n » powitać Cię, gdy wejdziesz na serwer,\n » połączyć twoje konto na serwerze Minecraft z kontem na Discord,\n » powiadomić Cię, gdy dostaniesz bana lub zostaniesz wyrzucony z serwera Discord,\n » odtwarzać dla Ciebie muzykę (zob. kanał {bot}\n » upiec Ci ciasto po /cake."
+delete: "Usunięto kod użytkownika:"
 discord_commands:
   ban:
     description: "Komenda do banowania."
@@ -172,7 +173,7 @@ discord_commands:
   stop:
     description: "Komenda do zatrzymania muzyki."
   quit:
-    description: "Komenda do kazania DragonBotowi opusczenia kanału."
+    description: "Komenda do kazania DragonBotowi opuszczenia kanału."
   pause:
     description: "Komenda do wstrzymania muzyki."
   resume:
