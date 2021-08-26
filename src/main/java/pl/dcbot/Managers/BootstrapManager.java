@@ -44,6 +44,7 @@ public class BootstrapManager {
     public static final long channel_wiadpotw = plugin.getConfig().getLong("serverconfig.channels.wiadpotw");
     public static final long channel_wsparcie = plugin.getConfig().getLong("serverconfig.channels.wsparcie");
     public static final long channel_pingi = plugin.getConfig().getLong("serverconfig.channels.role");
+    public static final long channel_colors = plugin.getConfig().getLong("serverconfig.channels.colors");
     public static final long channel_ogloszenia = plugin.getConfig().getLong("serverconfig.channels.ogloszenia");
     public static final long channel_zmiany = plugin.getConfig().getLong("serverconfig.channels.zmiany");
     public static final long channel_eventy = plugin.getConfig().getLong("serverconfig.channels.eventy");
@@ -111,6 +112,7 @@ public class BootstrapManager {
                 channel_wiadpotw,
                 channel_wsparcie,
                 channel_pingi,
+                channel_colors,
                 channel_ogloszenia,
                 channel_eventy,
                 channel_zmiany,
@@ -281,7 +283,7 @@ public class BootstrapManager {
 
         if (!ConfigManager.getDataFile().getBoolean("created.channel_colors")) {
 
-            SelectMenu selectMenu = SelectMenu.create("colors", LanguageManager.getMessage("menus.colors.title"), 0, 1,  Arrays.asList(
+            SelectMenu selectMenu = SelectMenu.create("colors", LanguageManager.getMessage("menus.color.title"), 0, 1,  Arrays.asList(
                     SelectMenuOption.create("❌️" + LanguageManager.getMessage("menus.color.default_pink"), "default_pink"),
                     SelectMenuOption.create("\uD83D\uDFE6️" + LanguageManager.getMessage("menus.color.blue"), "blue"),
                     SelectMenuOption.create("\uD83D\uDFE9️" + LanguageManager.getMessage("menus.color.green"), "green"),
@@ -303,7 +305,7 @@ public class BootstrapManager {
                                 plugin.getConfig().getString("embeds.footer.icon"))).addComponents(ActionRow.of(
                         selectMenu
                         )
-                ).send(server.getTextChannelById(channel_pingi).get()).get().getId();
+                ).send(server.getTextChannelById(channel_colors).get()).get().getId();
 
                 ConfigManager.getDataFile().set("ids.colors", roles_id);
                 plugin.saveConfig();
@@ -315,9 +317,7 @@ public class BootstrapManager {
             ConfigManager.getDataFile().set("created.channel_colors", true);
         }
         MuteManager.startListening();
-        if(api.getServerSlashCommands(server) == null){
             DiscordCommandManager.registerCommands();
-        }
 
         discordApi.updateStatus(UserStatus.ONLINE);
         discordApi.updateActivity(ActivityType.STREAMING, plugin.getConfig().getString("bot.description").replaceAll("\\{version}", plugin.getDescription().getVersion()));

@@ -23,7 +23,6 @@ public class DiscordCommandManager implements MessageCreateListener {
 
     public static void registerCommands(){
 
-        //TODO ALIASES: play, stop, pause, resume
 
         SlashCommand ban =
                 SlashCommand.with("ban", LanguageManager.getMessage("discord_commands.ban.description"),
@@ -231,8 +230,8 @@ public class DiscordCommandManager implements MessageCreateListener {
             if (e.getChannel().getId() == channel_rejestracja && !e.getMessage().getType().equals(MessageType.SLASH_COMMAND)) {
                 MessageManager.sendRawMessage(e.getChannel(),
                         LanguageManager.getMessage("dclink.wrong_message")
-                                .replace("{user}", e.getMessageAuthor().asUser().get().getMentionTag()
-                                        .replace("{rejestracja_pomoc}", server.getTextChannelById(channel_rejestracja_pomoc).get().getMentionTag())));
+                                .replace("{user}", e.getMessageAuthor().asUser().get().getMentionTag())
+                                        .replace("{rejestracja_pomoc}", server.getTextChannelById(channel_rejestracja_pomoc).get().getMentionTag()));
                 e.getMessage().delete();
             } else if (e.getMessage().getMentionedUsers().contains(api.getYourself())) {
                 MessageManager.sendRawMessage(e.getChannel(), LanguageManager.getMessage("ping")
