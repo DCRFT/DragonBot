@@ -9,7 +9,7 @@ Features:\
 • moderation commands,\
 • bot status,\
 • YouTube music player,\
-• Tickets/Suggestions system with votes.\
-• Role menu.\
-• Auto user voice channels,\
+• tickets/suggestions system with votes.\
+• role menu.\
+• auto user voice channels,\
 • and more...
