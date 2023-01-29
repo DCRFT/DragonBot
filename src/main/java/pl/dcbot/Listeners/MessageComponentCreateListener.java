@@ -4,12 +4,14 @@ import org.javacord.api.event.interaction.MessageComponentCreateEvent;
 import org.javacord.api.interaction.MessageComponentInteraction;
 import pl.dcbot.DragonBot;
 import pl.dcbot.Managers.ConfigManager;
+import pl.dcbot.Managers.LanguageManager;
 import pl.dcbot.Managers.ReportManager.ReportManager;
 import pl.dcbot.Managers.ReportManager.SuggestionCloseReason;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import static pl.dcbot.Managers.BootstrapManager.*;
 
@@ -51,16 +53,32 @@ public class MessageComponentCreateListener implements org.javacord.api.listener
             ReportManager.closeSuggestion(message, message.getChannel().get().asServerTextChannel().get(), message.getUser(), reason, time);
         }
 
-        else if(e.getMessageComponentInteraction().getMessageId() == reports_id){
+        else if(e.getMessageComponentInteraction().getMessage().getId() == reports_id){
             if(id.equalsIgnoreCase(plugin.getConfig().getString("embeds.reports.button.id"))){
                 message.createImmediateResponder().respond();
-                ReportManager.newReport(message, time);
+                if(ConfigManager.getDataFile().getLong("cooldown." + e.getMessageComponentInteraction().getUser().getId()) == 0L ||
+                        (System.currentTimeMillis() - ConfigManager.getDataFile().getLong("cooldown." + e.getMessageComponentInteraction().getUser().getId() + "") >= TimeUnit.MINUTES.toMillis(3)) ||
+                        e.getMessageComponentInteraction().getServer().get().isAdmin(e.getMessageComponentInteraction().getUser())) {
+                    ReportManager.newReport(message, time);
+                    ConfigManager.getDataFile().set("cooldown." + e.getMessageComponentInteraction().getUser().getId(), System.currentTimeMillis());
+                    ConfigManager.saveData();
+                } else {
+                    e.getMessageComponentInteraction().getUser().sendMessage(LanguageManager.getMessage("cooldown"));
+                }
             }
         }
-        else if(e.getMessageComponentInteraction().getMessageId() == suggestions_id){
+        else if(e.getMessageComponentInteraction().getMessage().getId() == suggestions_id){
             if(id.equalsIgnoreCase(plugin.getConfig().getString("embeds.suggestions.button.id"))){
                 message.createImmediateResponder().respond();
-                ReportManager.newSuggestion(message, time);
+                if(ConfigManager.getDataFile().getLong("cooldown." + e.getMessageComponentInteraction().getUser().getId()) == 0L ||
+                        (System.currentTimeMillis() - ConfigManager.getDataFile().getLong("cooldown." + e.getMessageComponentInteraction().getUser().getId() + "") >= TimeUnit.MINUTES.toMillis(3)) ||
+                        e.getMessageComponentInteraction().getServer().get().isAdmin(e.getMessageComponentInteraction().getUser())) {
+                    ReportManager.newSuggestion(message, time);
+                    ConfigManager.getDataFile().set("cooldown." + e.getMessageComponentInteraction().getUser().getId(), System.currentTimeMillis());
+                    ConfigManager.saveData();
+                } else {
+                    e.getMessageComponentInteraction().getUser().sendMessage(LanguageManager.getMessage("cooldown"));
+                }
             }
         }
     }

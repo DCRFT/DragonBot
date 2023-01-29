@@ -154,41 +154,42 @@ public class BootstrapManager {
                 role_color_grey,
                 role_color_black,
                 role_color_white);
+
         if(!api.getServerById(serwer).isPresent()){
             ErrorUtil.logError(LanguageManager.getMessage("errors.configuration.server") + serwer);
             return false;
         }
+        server = api.getServerById(serwer).get();
         for (long i : channels) {
-            if(!api.getServerById(serwer).get().getTextChannelById(i).isPresent()) {
+            if(!server.getTextChannelById(i).isPresent()) {
                 ErrorUtil.logError(LanguageManager.getMessage("errors.configuration.channel") + i);
                 return false;
             }
         }
         for (long i : vcs) {
-            if(!api.getServerById(serwer).get().getVoiceChannelById(i).isPresent()) {
+            if(!server.getVoiceChannelById(i).isPresent()) {
                 ErrorUtil.logError(LanguageManager.getMessage("errors.configuration.voicechannel") + i);
                 return false;
             }
         }
         for (long i : categories) {
-            if(!api.getServerById(serwer).get().getChannelCategoryById(i).isPresent()) {
+            if(!server.getChannelCategoryById(i).isPresent()) {
                 ErrorUtil.logError(LanguageManager.getMessage("errors.configuration.category") + i);
                 return false;
             }
         }
         for (long i : emojis) {
-            if(!api.getServerById(serwer).get().getCustomEmojiById(i).isPresent()) {
+            if(!server.getCustomEmojiById(i).isPresent()) {
                 ErrorUtil.logError(LanguageManager.getMessage("errors.configuration.emoji") + i);
                 return false;
             }
         }
         for (long i : roles) {
-            if(!api.getServerById(serwer).get().getRoleById(i).isPresent()) {
+            if(!server.getRoleById(i).isPresent()) {
                 ErrorUtil.logError(LanguageManager.getMessage("errors.configuration.role") + i);
                 return false;
             }
         }
-        server = api.getServerById(serwer).get();
         return true;
     }
 
@@ -297,8 +298,8 @@ public class BootstrapManager {
 
             try {
                 long roles_id = new MessageBuilder().setEmbed(new EmbedBuilder()
-                        .setAuthor(plugin.getConfig().getString("embeds.roles.author"))
-                        .addField(plugin.getConfig().getString("embeds.roles.field.name"), plugin.getConfig().getString("embeds.roles.field.value"))
+                        .setAuthor(plugin.getConfig().getString("embeds.colors.author"))
+                        .addField(plugin.getConfig().getString("embeds.colors.field.name"), plugin.getConfig().getString("embeds.colors.field.value"))
                         .setColor(Color.GREEN)
                         .setFooter(plugin.getConfig().getString("embeds.footer.text")
                                         .replace("{version}", plugin.getDescription().getVersion()).replace("{time}", time),

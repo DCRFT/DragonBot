@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LanguageManager {
+
     public static final DragonBot plugin = DragonBot.getInstance();
 
     public static String getMessage(String key){

@@ -63,7 +63,6 @@ public class DragonBot extends JavaPlugin {
 
     public void onConnectToDiscord(DiscordApi api) {
         DragonBot.api = api;
-
         api.addListener(new DiscordCommandManager());
         api.addListener(new ServerMemberJoinListener());
         api.addListener(new DirectMessageListener());

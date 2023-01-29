@@ -11,6 +11,7 @@ import pl.dcbot.Managers.LanguageManager;
 import java.awt.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -20,7 +21,7 @@ public class PunishmentManager {
 
     private static final DragonBot plugin = DragonBot.getInstance();
 
-    public static void muteUser(User user, Server server, int days, int hours, int minutes, String reason) {
+    public static void muteUser(User user, Server server, long days, long hours, long minutes, String reason) {
         String muteTime;
         String days_format = LanguageManager.getMessage("punishments.embeds.timeformat.days");
         String hours_format = LanguageManager.getMessage("punishments.embeds.timeformat.hours");
@@ -46,9 +47,9 @@ public class PunishmentManager {
         Date date = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        cal.add(Calendar.DATE, days);
-        cal.add(Calendar.HOUR, hours);
-        cal.add(Calendar.MINUTE, minutes);
+        cal.add(Calendar.DATE, (int) days);
+        cal.add(Calendar.HOUR, (int) hours);
+        cal.add(Calendar.MINUTE, (int) minutes);
 
 
         DateFormat df = new SimpleDateFormat("HH:mm");
@@ -87,7 +88,7 @@ public class PunishmentManager {
                         plugin.getConfig().getString("embeds.footer.icon"));
         user.sendMessage(embed);
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> server.banUser(user, 0, reason).join(), 10L);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> server.banUser(user, Duration.ZERO, reason).join(), 10L);
     }
     public static void kickUser(User user, Server server, String reason){
 

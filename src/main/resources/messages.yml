@@ -1,7 +1,7 @@
 prefix: "§e§lDragon§6§lCraft §e» "
 notfound: "§cNie ma takiej komendy. Użyj §e/info§c, aby dowiedzieć się więcej o dostępnych komendach."
 console_error: "Tej komendy nie można wywołać z konsoli."
-dm_error: "⟨❗⟩ Hej! Nie działam w wiadomościach prywatnych."
+dm_error: "❗│ Hej! Nie działam w wiadomościach prywatnych."
 activity:
   connecting: "Uruchamianie..."
   restart: "Wyłączanie..."
@@ -26,6 +26,7 @@ commands:
     staff_notification: "§e§lDragon§6§lCraft §e» §cZgłoszenie§e #{number} od {player}: "
     embed:
       report: "Zgłoszenie #"
+cooldown: "❗│ Hej! Poczekaj chwilę przed otworzeniem kolejnego zgłoszenia/propozycji."
 errors:
   database:
     - "§e--------------------------------------------"
@@ -62,11 +63,11 @@ errors:
     emoji: "emoji: "
     role: "rola: "
 punishments:
-  wrong_user: "⟨❗⟩ Podaj poprawnego użytkownika."
-  ban: "⟨✅⟩ Użytkownik został zbanowany."
-  kick: "⟨✅⟩ Użytkownik został wyrzucony."
-  mute: "⟨✅⟩ Użytkownik został wyciszony."
-  unmute: "⟨✅⟩ Użytkownik został odciszony."
+  wrong_user: "❗│ Podaj poprawnego użytkownika."
+  ban: "✅│ Użytkownik został zbanowany."
+  kick: "✅│ Użytkownik został wyrzucony."
+  mute: "✅│ Użytkownik został wyciszony."
+  unmute: "✅│ Użytkownik został odciszony."
   embeds:
     ban:
       author: "Zostałeś zbanowany na serwerze"
@@ -95,8 +96,8 @@ suggestions:
   upvotes: "Głosy za:"
   downvotes: "Głosy przeciw:"
 directmessage:
-  wrong_user: "⟨❗⟩ Podaj poprawnego użytkownika."
-  sent: "⟨✅⟩ Wiadomość została wysłana."
+  wrong_user: "❗│ Podaj poprawnego użytkownika."
+  sent: "✅│ Wiadomość została wysłana."
   embed:
     author: "Dostałeś wiadomość z serwera"
     field1: "» Treść:"
@@ -104,8 +105,8 @@ directmessage:
       name: "Prosimy nie odpisywać na tę wiadomość, gdyż jej nie zobaczymy."
       value: "Jeśli chcesz się z nami skontaktować, utwórz zgłoszenie na naszym serwerze Discord."
 potw:
-  wrong_user: "⟨❗⟩ Podaj poprawnego użytkownika."
-  sent: "⟨✅⟩ Potwierdzono udział w rekrutacji."
+  wrong_user: "❗│ Podaj poprawnego użytkownika."
+  sent: "✅│ Potwierdzono udział w rekrutacji."
   embed:
     author: "Dostałeś potwierdzenie z serwera"
     field1: "Nie usuwaj jej!"
@@ -114,36 +115,36 @@ potw:
       value: "Jeśli chcesz się z nami skontaktować, utwórz zgłoszenie na naszym serwerze Discord."
 music:
   play:
-    error: "⟨❗⟩ Wystąpił błąd."
-    no_results: "⟨❗⟩ Nie znaleziono wyników."
-    success: "⟨▶️⟩ Odtwarzam"
-    no_track: "⟨❗⟩ Podaj nazwę utworu, którego chcesz posłuchać."
-    no_vc: "⟨❗⟩ Aby odtwarzać muzykę, musisz być na tym samym kanale głosowym."
-    already_playing_other_channel: "⟨❗⟩ Musisz być na tym samym kanale co ja, gdy jestem już połączony!"
+    error: "❗│ Wystąpił błąd."
+    no_results: "❗│ Nie znaleziono wyników."
+    success: "▶️│ Odtwarzam"
+    no_track: "❗│ Podaj nazwę utworu, którego chcesz posłuchać."
+    no_vc: "❗│ Aby odtwarzać muzykę, musisz być na tym samym kanale głosowym."
+    already_playing_other_channel: "❗│ Musisz być na tym samym kanale co ja, gdy jestem już połączony!"
   stop:
-    no_vc: "⟨❗⟩ Aby zatrzymać muzykę, musisz być na tym samym kanale głosowym."
-    no_vc_bot: "⟨❗⟩ Nie jestem na żadnym kanale głosowym lub nie jesteś na nim ze mną!"
-    success: "⟨❗⟩ Zatrzymano"
+    no_vc: "❗│ Aby zatrzymać muzykę, musisz być na tym samym kanale głosowym."
+    no_vc_bot: "❗│ Nie jestem na żadnym kanale głosowym lub nie jesteś na nim ze mną!"
+    success: "❗│ Zatrzymano"
   quit:
-    no_vc: "⟨❗⟩ Aby kazać mi wyjść, musisz być na kanale tym samym głosowym."
-    no_vc_bot: "⟨❗⟩ Nie jestem na żadnym kanale głosowym lub nie jesteś na nim ze mną!"
-    success: "⟨❗⟩ Wyszedłem!"
+    no_vc: "❗│ Aby kazać mi wyjść, musisz być na kanale tym samym głosowym."
+    no_vc_bot: "❗│ Nie jestem na żadnym kanale głosowym lub nie jesteś na nim ze mną!"
+    success: "❗│ Wyszedłem!"
   pause:
-    no_vc: "⟨❗⟩ Aby kazać mi wstrzymać utwór, musisz być na tym samym kanale głosowym."
-    no_vc_bot: "⟨❗⟩ Nie jestem na żadnym kanale głosowym lub nie jesteś na nim ze mną!"
-    success: "⟨❗⟩ Wstrzymano!"
+    no_vc: "❗│ Aby kazać mi wstrzymać utwór, musisz być na tym samym kanale głosowym."
+    no_vc_bot: "❗│ Nie jestem na żadnym kanale głosowym lub nie jesteś na nim ze mną!"
+    success: "❗│ Wstrzymano!"
   resume:
-    no_vc: "⟨❗⟩ Aby kazać mi wznowić utwór, musisz być na  tym samymkanale głosowym."
-    no_vc_bot: "⟨❗⟩ Nie jestem na żadnym kanale głosowym lub nie jesteś na nim ze mną!"
-    not_paused: "⟨❗⟩ Nie wstrzymuję żadnego utworu."
-    success: "⟨❗⟩ Wznowiono!"
+    no_vc: "❗│ Aby kazać mi wznowić utwór, musisz być na  tym samymkanale głosowym."
+    no_vc_bot: "❗│ Nie jestem na żadnym kanale głosowym lub nie jesteś na nim ze mną!"
+    not_paused: "❗│ Nie wstrzymuję żadnego utworu."
+    success: "❗│ Wznowiono!"
 dclink:
-  wrong_channel: "⟨❗⟩ Aby się zarejestrować, użyj kanału {rejestracja}."
+  wrong_channel: "❗│ Aby się zarejestrować, użyj kanału {rejestracja}."
   wrong_message: "Hej {user}! Twoja wiadomość została usunięta, gdyż kanał należy wyłącznie do rejestracji. Użyj komendy /dclink kod, aby się zarejestrować. Jeśli potrzebujesz pomocy, zobacz {rejestracja_pomoc}."
-  wrong_code: "⟨❗⟩ Podaj poprawny kod weryfikacyjny. Jeśli go nie posiadasz, wpisz /dclink w grze i ponownie wpisz /dclink [kod]."
+  wrong_code: "❗│ Podaj poprawny kod weryfikacyjny. Jeśli go nie posiadasz, wpisz /dclink w grze i ponownie wpisz /dclink [kod]."
   wait: "Rejestruję, czekaj..."
   nickname_change_reason: "rejestracja"
-  error: "⟨❗⟩ Wystąpił problem podczas rejestracji. Skontaktuj się z administracją."
+  error: "❗│ Wystąpił problem podczas rejestracji. Skontaktuj się z administracją."
   success: "{user}, połączyłem twoje konto Minecraft **{minecraft}** z serwerem Discord **DragonCraft**."
 cake: "\uD83E\uDD6E Mniam!"
 code:

@@ -10,8 +10,6 @@ import pl.dcbot.Managers.DatabaseManager;
 import pl.dcbot.Utils.ErrorUtils.ErrorReason;
 import pl.dcbot.Utils.ErrorUtils.ErrorUtil;
 
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
@@ -25,7 +23,6 @@ public class ServerBanListener implements ServerMemberBanListener, ServerMemberU
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
                 DatabaseManager.openConnection();
-                Statement statement =DatabaseManager.connection.createStatement();
 
                 byte[] nick_awatar = "".getBytes();
                 if (e.getUser().getAvatar().asByteArray().get() != null) {
@@ -34,8 +31,8 @@ public class ServerBanListener implements ServerMemberBanListener, ServerMemberU
                 String image = Base64.getEncoder().encodeToString(nick_awatar);
 
                 String powod = "brak powodu";
-                if (!e.requestReason().get().isPresent()) {
-                    powod = e.requestReason().get().toString();
+                if (!e.requestBan().get().getReason().isPresent()) {
+                    powod = e.requestBan().get().getReason().toString();
                 }
 
                 DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
@@ -50,9 +47,8 @@ public class ServerBanListener implements ServerMemberBanListener, ServerMemberU
                         " '" + powod + "'," +
                         " '" + time + "');";
 
-                statement.executeUpdate(update);
-                statement.close();
-            } catch (SQLException | ExecutionException | InterruptedException e1) {
+                DatabaseManager.get().executeStatement(update);
+            } catch (ExecutionException | InterruptedException e1) {
                 e1.printStackTrace();
                 ErrorUtil.logError(ErrorReason.DATABASE);
             }
@@ -62,18 +58,11 @@ public class ServerBanListener implements ServerMemberBanListener, ServerMemberU
     @Override
     public void onServerMemberUnban(ServerMemberUnbanEvent e) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            try {
-                DatabaseManager.openConnection();
-                Statement statement = DatabaseManager.connection.createStatement();
+            DatabaseManager.openConnection();
 
-                String update = "DELETE FROM `bany_discord` WHERE `nick_id` = " + e.getUser().getIdAsString() + "";
+            String update = "DELETE FROM `bany_discord` WHERE `nick_id` = " + e.getUser().getIdAsString() + "";
 
-                statement.executeUpdate(update);
-                statement.close();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-                ErrorUtil.logError(ErrorReason.DATABASE);
-            }
+            DatabaseManager.get().executeStatement(update);
         });
     }
 }

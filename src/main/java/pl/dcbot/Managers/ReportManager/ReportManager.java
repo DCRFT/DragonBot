@@ -1,6 +1,7 @@
 package pl.dcbot.Managers.ReportManager;
 
 import org.bukkit.Bukkit;
+import org.javacord.api.entity.channel.RegularServerChannel;
 import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.channel.ServerTextChannelBuilder;
 import org.javacord.api.entity.message.Message;
@@ -20,6 +21,7 @@ import pl.dcbot.Managers.ConfigManager;
 import pl.dcbot.Managers.LanguageManager;
 
 import java.awt.*;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import static pl.dcbot.Managers.BootstrapManager.*;
@@ -34,31 +36,31 @@ public class ReportManager {
                 .setCategory(api.getChannelCategoryById(category_zgl_otwarte).get())
                 .setTopic(String.valueOf(id))
                 .addPermissionOverwrite(message.getUser(), new PermissionsBuilder()
-                        .setState(PermissionType.READ_MESSAGES, PermissionState.ALLOWED)
+                        .setState(PermissionType.VIEW_CHANNEL, PermissionState.ALLOWED)
                         .setState(PermissionType.SEND_MESSAGES, PermissionState.ALLOWED)
                         .setState(PermissionType.READ_MESSAGE_HISTORY, PermissionState.ALLOWED)
                         .build())
                 .addPermissionOverwrite(server.getEveryoneRole(), new PermissionsBuilder()
-                        .setState(PermissionType.READ_MESSAGES, PermissionState.DENIED)
+                        .setState(PermissionType.VIEW_CHANNEL, PermissionState.DENIED)
                         .build())
                 .addPermissionOverwrite(server.getRoleById(role_pomocnik).get(), new PermissionsBuilder()
-                        .setState(PermissionType.READ_MESSAGES, PermissionState.ALLOWED)
+                        .setState(PermissionType.VIEW_CHANNEL, PermissionState.ALLOWED)
                         .setState(PermissionType.SEND_MESSAGES, PermissionState.ALLOWED)
                         .build())
                 .addPermissionOverwrite(server.getRoleById(role_moderator).get(), new PermissionsBuilder()
-                        .setState(PermissionType.READ_MESSAGES, PermissionState.ALLOWED)
+                        .setState(PermissionType.VIEW_CHANNEL, PermissionState.ALLOWED)
                         .setState(PermissionType.SEND_MESSAGES, PermissionState.ALLOWED)
                         .build())
                 .addPermissionOverwrite(server.getRoleById(role_viceadministrator).get(), new PermissionsBuilder()
-                        .setState(PermissionType.READ_MESSAGES, PermissionState.ALLOWED)
+                        .setState(PermissionType.VIEW_CHANNEL, PermissionState.ALLOWED)
                         .setState(PermissionType.SEND_MESSAGES, PermissionState.ALLOWED)
                         .build())
                 .addPermissionOverwrite(server.getRoleById(role_administrator).get(), new PermissionsBuilder()
-                        .setState(PermissionType.READ_MESSAGES, PermissionState.ALLOWED)
+                        .setState(PermissionType.VIEW_CHANNEL, PermissionState.ALLOWED)
                         .setState(PermissionType.SEND_MESSAGES, PermissionState.ALLOWED)
                         .build())
                 .addPermissionOverwrite(server.getRoleById(role_wlasciciel).get(), new PermissionsBuilder()
-                        .setState(PermissionType.READ_MESSAGES, PermissionState.ALLOWED)
+                        .setState(PermissionType.VIEW_CHANNEL, PermissionState.ALLOWED)
                         .setState(PermissionType.SEND_MESSAGES, PermissionState.ALLOWED)
                         .build())
                 .create().join();
@@ -93,33 +95,33 @@ public class ReportManager {
                 .setCategory(api.getChannelCategoryById(category_propo_otwarte).get())
                 .setTopic(String.valueOf(id))
                 .addPermissionOverwrite(message.getUser(), new PermissionsBuilder()
-                        .setState(PermissionType.READ_MESSAGES, PermissionState.ALLOWED)
+                        .setState(PermissionType.VIEW_CHANNEL, PermissionState.ALLOWED)
                         .setState(PermissionType.SEND_MESSAGES, PermissionState.ALLOWED)
                         .build())
                 .addPermissionOverwrite(server.getEveryoneRole(), new PermissionsBuilder()
-                        .setState(PermissionType.READ_MESSAGES, PermissionState.ALLOWED)
+                        .setState(PermissionType.VIEW_CHANNEL, PermissionState.ALLOWED)
                         .setState(PermissionType.SEND_MESSAGES, PermissionState.DENIED)
                         .setState(PermissionType.ADD_REACTIONS, PermissionState.DENIED)
                         .setState(PermissionType.READ_MESSAGE_HISTORY, PermissionState.ALLOWED)
                         .build())
                 .addPermissionOverwrite(server.getRoleById(role_pomocnik).get(), new PermissionsBuilder()
-                        .setState(PermissionType.READ_MESSAGES, PermissionState.ALLOWED)
+                        .setState(PermissionType.VIEW_CHANNEL, PermissionState.ALLOWED)
                         .setState(PermissionType.SEND_MESSAGES, PermissionState.ALLOWED)
                         .build())
                 .addPermissionOverwrite(server.getRoleById(role_moderator).get(), new PermissionsBuilder()
-                        .setState(PermissionType.READ_MESSAGES, PermissionState.ALLOWED)
+                        .setState(PermissionType.VIEW_CHANNEL, PermissionState.ALLOWED)
                         .setState(PermissionType.SEND_MESSAGES, PermissionState.ALLOWED)
                         .build())
                 .addPermissionOverwrite(server.getRoleById(role_viceadministrator).get(), new PermissionsBuilder()
-                        .setState(PermissionType.READ_MESSAGES, PermissionState.ALLOWED)
+                        .setState(PermissionType.VIEW_CHANNEL, PermissionState.ALLOWED)
                         .setState(PermissionType.SEND_MESSAGES, PermissionState.ALLOWED)
                         .build())
                 .addPermissionOverwrite(server.getRoleById(role_administrator).get(), new PermissionsBuilder()
-                        .setState(PermissionType.READ_MESSAGES, PermissionState.ALLOWED)
+                        .setState(PermissionType.VIEW_CHANNEL, PermissionState.ALLOWED)
                         .setState(PermissionType.SEND_MESSAGES, PermissionState.ALLOWED)
                         .build())
                 .addPermissionOverwrite(server.getRoleById(role_wlasciciel).get(), new PermissionsBuilder()
-                        .setState(PermissionType.READ_MESSAGES, PermissionState.ALLOWED)
+                        .setState(PermissionType.VIEW_CHANNEL, PermissionState.ALLOWED)
                         .setState(PermissionType.SEND_MESSAGES, PermissionState.ALLOWED)
                         .build())
                 .create().join();
@@ -156,6 +158,7 @@ public class ReportManager {
         ConfigManager.saveData();
     }
 
+
     public static void closeReport(MessageComponentInteraction message, ServerTextChannel channel, User user, String time) {
         message.createOriginalMessageUpdater().addComponents(ActionRow.of(
                 new ButtonBuilder()
@@ -165,7 +168,6 @@ public class ReportManager {
                         .setDisabled(true)
                         .build()
         )).update().join();
-        message.getChannel().get().asServerTextChannel().get().updateCategory(server.getChannelCategoryById(category_zgl_zamkniete).get());
 
         EmbedBuilder embed = new EmbedBuilder()
                 .setAuthor("Zgłoszenie #" + channel.getTopic())
@@ -176,14 +178,27 @@ public class ReportManager {
                         plugin.getConfig().getString("embeds.footer.icon"));
         channel.sendMessage(embed);
 
-        if (server.getChannelCategoryById(category_zgl_zamkniete).get().getChannels().size() >= 50) {
-            server.getChannelCategoryById(category_zgl_zamkniete).get().getChannels().get(0).delete();
+
+        List<RegularServerChannel> channels = server.getChannelCategoryById(category_zgl_zamkniete).get().getChannels();
+        if (channels.size() >= 15) {
+            long descMin = System.currentTimeMillis();
+            int iMin = channels.size() - 1;
+            for(int i = 0; i < channels.size(); i ++) {
+                long currentDescTimestamp = Long.parseLong(channels.get(i).asServerTextChannel().get().getTopic());
+                if(currentDescTimestamp < descMin){
+                    descMin = currentDescTimestamp;
+                    iMin = i;
+                }
+            }
+            server.getChannelCategoryById(category_zgl_zamkniete).get().getChannels().get(iMin).delete("DragonBot reports cleanup.");
         }
         Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, () -> {
             message.getChannel().get().asServerTextChannel().get().updateCategory(server.getChannelCategoryById(category_zgl_zamkniete).get());
+            message.getChannel().get().asServerTextChannel().get().updateTopic(String.valueOf(System.currentTimeMillis()));
             channel.createUpdater().setRawPosition(100);
         }, 5L);
-    }
+        }
+
 
     public static void closeSuggestion(MessageComponentInteraction message, ServerTextChannel channel, User user, SuggestionCloseReason reason, String time) {
 
@@ -191,7 +206,7 @@ public class ReportManager {
         int upvotes = ConfigManager.getDataFile().getInt("ids.suggestion." + message.getChannel().get().getId() + ".upvotes");
         int downvotes = ConfigManager.getDataFile().getInt("ids.suggestion." + message.getChannel().get().getId() + ".downvotes");
 
-        message.getMessage().get().removeAllReactions().join();
+        message.getMessage().removeAllReactions().join();
 
         ButtonStyle style = ButtonStyle.SECONDARY;
         String label = plugin.getConfig().getString("embeds.suggestions.new_suggestion.button_close.closed.label");
@@ -208,15 +223,15 @@ public class ReportManager {
             case ACCEPTED:
                 style = ButtonStyle.SUCCESS;
                 label = plugin.getConfig().getString("embeds.suggestions.new_suggestion.button_accept.closed.label");
-                id = plugin.getConfig().getString("embeds.suggestions.new_suggestion.button_accept.closed.id");
+                id = plugin.getConfig().getString("embeds.suggestions.new_suggestion.button_accept.id");
                 embed.addField(plugin.getConfig().getString("embeds.suggestions.new_suggestion.accepted"), user.getDisplayName(server));
                 embed.setColor(Color.GREEN);
                 break;
             case REJECTED:
                 style = ButtonStyle.DANGER;
                 label = plugin.getConfig().getString("embeds.suggestions.new_suggestion.button_reject.closed.label");
-                id = plugin.getConfig().getString("embeds.suggestions.new_suggestion.button_reject.closed.id");
-                embed.addField(plugin.getConfig().getString("embeds.suggestions.new_suggestion.accepted"), user.getDisplayName(server));
+                id = plugin.getConfig().getString("embeds.suggestions.new_suggestion.button_reject.id");
+                embed.addField(plugin.getConfig().getString("embeds.suggestions.new_suggestion.rejected"), user.getDisplayName(server));
                 embed.setColor(Color.RED);
                 break;
             case CLOSED:
@@ -236,12 +251,25 @@ public class ReportManager {
 
         channel.sendMessage(embed).join();
 
-        if (server.getChannelCategoryById(category_propo_zamkniete).get().getChannels().size() >= 50) {
-            server.getChannelCategoryById(category_propo_zamkniete).get().getChannels().get(0).delete();
+
+        List<RegularServerChannel> channels = server.getChannelCategoryById(category_propo_zamkniete).get().getChannels();
+        if (channels.size() >= 15) {
+            long descMin = System.currentTimeMillis();
+            int iMin = channels.size() - 1;
+            for(int i = 0; i < channels.size(); i ++) {
+                long currentDescTimestamp = Long.parseLong(channels.get(i).asServerTextChannel().get().getTopic());
+                if(currentDescTimestamp < descMin){
+                    descMin = currentDescTimestamp;
+                    iMin = i;
+                }
+            }
+            server.getChannelCategoryById(category_propo_zamkniete).get().getChannels().get(iMin).delete("DragonBot reports cleanup.");
             ConfigManager.getDataFile().set("ids.suggestion." + message.getChannel().get().getId(), null);
         }
+
         Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, () -> {
             message.getChannel().get().asServerTextChannel().get().updateCategory(server.getChannelCategoryById(category_propo_zamkniete).get());
+            message.getChannel().get().asServerTextChannel().get().updateTopic(String.valueOf(System.currentTimeMillis()));
             channel.createUpdater().setRawPosition(100);
         }, 5L);
     }

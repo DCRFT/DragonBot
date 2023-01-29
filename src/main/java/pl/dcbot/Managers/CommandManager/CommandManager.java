@@ -29,6 +29,11 @@ public class CommandManager implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        /*if (cmd.getName().equalsIgnoreCase("testowa")) {
+            if(sender.hasPermission("test.adm")){
+                ReportManager.testClosing();
+            }
+        }*/
         if (cmd.getName().equalsIgnoreCase("discord")) {
             MessageManager.sendMessageList(sender, "command.discord");
         }

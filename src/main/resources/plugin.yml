@@ -1,7 +1,7 @@
 name: DragonBot
 version: ${project.version}-b${buildNumber}
 main: pl.dcbot.DragonBot
-api-version: 1.16
+api-version: 1.18
 commands:
   dclink:
     description: a
@@ -12,3 +12,5 @@ commands:
   dcb:
     description: test
     permission: dcb.adm
+  testowa:
+    permission: test.adm

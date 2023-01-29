@@ -131,5 +131,10 @@ embeds:
     field:
       name: "Wybierz rolę/e dotyczącą/e wzmianek."
       value: "Kliknij w menu poniżej"
+  colors:
+    author: "Kolory"
+    field:
+      name: "Wybierz kolor pseudonimu."
+      value: "Kliknij w menu poniżej"
 punishments:
   default_reason: "brak powodu"

@@ -33,8 +33,8 @@ public class SlashCommandsListener implements SlashCommandCreateListener {
         SlashCommandInteraction command = e.getSlashCommandInteraction();
 
         if (command.getCommandName().equalsIgnoreCase("ban")) {
-            User user = command.getFirstOptionUserValue().orElse(null);
-            String reason = command.getSecondOptionStringValue().orElse(plugin.getConfig().getString("punishments,default_reason"));
+            User user = command.getOptionByIndex(0).get().getUserValue().orElse(null);
+            String reason = command.getOptionByIndex(1).get().getStringValue().orElse(plugin.getConfig().getString("punishments,default_reason"));
             if (user == null) {
                 MessageManager.sendMessage(command, "punishments.wrong_user");
                 return;
@@ -43,8 +43,8 @@ public class SlashCommandsListener implements SlashCommandCreateListener {
             }
             MessageManager.sendMessage(command, "punishments.ban");
         } else if (command.getCommandName().equalsIgnoreCase("kick")) {
-            User user = command.getFirstOptionUserValue().orElse(null);
-            String reason = command.getSecondOptionStringValue().orElse(plugin.getConfig().getString("punishments,default_reason"));
+            User user = command.getOptionByIndex(0).get().getUserValue().orElse(null);
+            String reason = command.getOptionByIndex(1).get().getStringValue().orElse(plugin.getConfig().getString("punishments,default_reason"));
             if (user == null) {
                 MessageManager.sendMessage(command, "punishments.wrong_user");
                 return;
@@ -55,12 +55,12 @@ public class SlashCommandsListener implements SlashCommandCreateListener {
 
         } else if (command.getCommandName().equalsIgnoreCase("mute")) {
 
-            User user = command.getFirstOptionUserValue().orElse(null);
-            int days = command.getOptionIntValueByIndex(1).orElse(0);
-            int hours = command.getOptionIntValueByIndex(2).orElse(0);
-            int minutes = command.getOptionIntValueByIndex(3).orElse(0);
+            User user = command.getOptionByIndex(0).get().getUserValue().orElse(null);
+            long days = command.getOptionByIndex(1).get().getLongValue().orElse(0L);
+            long hours = command.getOptionByIndex(2).get().getLongValue().orElse(0L);
+            long minutes = command.getOptionByIndex(3).get().getLongValue().orElse(0L);
 
-            String reason = command.getOptionStringValueByIndex(4).orElse(plugin.getConfig().getString("punishments,default_reason"));
+            String reason = command.getOptionByIndex(4).get().getStringValue().orElse(plugin.getConfig().getString("punishments,default_reason"));
 
             if (user == null) {
                 MessageManager.sendMessage(command, "punishments.wrong_user");
@@ -70,7 +70,7 @@ public class SlashCommandsListener implements SlashCommandCreateListener {
 
             PunishmentManager.muteUser(user, server, days, hours, minutes, reason);
         } else if (command.getCommandName().equalsIgnoreCase("unmute")) {
-            User user = command.getFirstOptionUserValue().orElse(null);
+            User user = command.getOptionByIndex(0).get().getUserValue().orElse(null);
             if (user == null) {
                 MessageManager.sendMessage(command, "punishments.wrong_user");
                 return;
@@ -78,8 +78,8 @@ public class SlashCommandsListener implements SlashCommandCreateListener {
             MessageManager.sendMessage(command, "punishments.unmute");
             PunishmentManager.unmuteUser(user, server);
         } else if (command.getCommandName().equalsIgnoreCase("wiad")) {
-            User user = command.getFirstOptionUserValue().orElse(null);
-            String m = command.getSecondOptionStringValue().orElse("?");
+            User user = command.getOptionByIndex(0).get().getUserValue().orElse(null);
+            String m = command.getOptionByIndex(1).get().getStringValue().orElse("?");
             if (user == null) {
                 MessageManager.sendMessage(command, "directmessage.wrong_user");
                 return;
@@ -95,7 +95,7 @@ public class SlashCommandsListener implements SlashCommandCreateListener {
             user.sendMessage(embed);
             MessageManager.sendMessage(command, "directmessage.sent");
         } else if (command.getCommandName().equalsIgnoreCase("potw")) {
-            User user = command.getFirstOptionUserValue().orElse(null);
+            User user = command.getOptionByIndex(0).get().getUserValue().orElse(null);
             if (user == null) {
                 MessageManager.sendMessage(command, "potw.wrong_user");
                 return;
@@ -123,8 +123,8 @@ public class SlashCommandsListener implements SlashCommandCreateListener {
                         .respond();
                 return;
             }
-            int code = command.getFirstOptionIntValue().orElse(0);
-            if (code == 0) {
+            long code = command.getOptionByIndex(0).get().getLongValue().orElse(0L);
+            if (code == 0L) {
                 MessageManager.sendMessage(command, "dclink.wrong_code");
                 return;
             }
@@ -134,7 +134,7 @@ public class SlashCommandsListener implements SlashCommandCreateListener {
         } else if (command.getCommandName().equalsIgnoreCase("p")
                 || command.getCommandName().equalsIgnoreCase("play")
                 || command.getCommandName().equalsIgnoreCase("graj")) {
-            String track = command.getFirstOptionStringValue().orElse(null);
+            String track = command.getOptionByIndex(0).get().getStringValue().orElse(null);
             if (track == null) {
                 MessageManager.sendMessage(command, "music.play.no_track");
             } else if (!command.getUser().getConnectedVoiceChannel(server).isPresent()) {

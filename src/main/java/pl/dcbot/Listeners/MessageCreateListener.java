@@ -7,8 +7,6 @@ import pl.dcbot.DragonBot;
 import pl.dcbot.Managers.DatabaseManager;
 
 import java.awt.*;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -73,26 +71,15 @@ public class MessageCreateListener implements org.javacord.api.listener.message.
 
             String finalTresc = tresc;
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                try {
-                    DatabaseManager.openConnection();
-                    PreparedStatement pstmt;
-                    if (e.getChannel().getId() == channel_eventy) {
-                        pstmt = DatabaseManager.connection.prepareStatement("INSERT INTO `ogloszenia` (nick, data, tresc, typ) VALUES (?, ?, ?, ?)");
-                        pstmt.setInt(4, 1);
-                    } else {
-                        pstmt = DatabaseManager.connection.prepareStatement("INSERT INTO `ogloszenia` (nick, data, tresc, typ) VALUES (?, ?, ?, ?)");
-                        pstmt.setInt(4, 0);
-                    }
+                DatabaseManager.openConnection();
+                String sql;
+                if (e.getChannel().getId() == channel_eventy) {
+                    sql = "INSERT INTO `ogloszenia` (nick, data, tresc, typ) VALUES ('" + nick + "', '" +  data+ "', '" + finalTresc + "', 1)";
 
-                    pstmt.setString(1, nick);
-                    pstmt.setString(2, data);
-                    pstmt.setString(3, finalTresc)
-                    ;
-                    pstmt.executeUpdate();
-
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
+                } else {
+                    sql = "INSERT INTO `ogloszenia` (nick, data, tresc, typ) VALUES ('" + nick + "', '" +  data+ "', '" + finalTresc + "', 0)";
                 }
+                DatabaseManager.get().executeStatement(sql);
             });
         }
     }

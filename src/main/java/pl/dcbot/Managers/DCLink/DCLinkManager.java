@@ -11,7 +11,6 @@ import pl.dcbot.Utils.ErrorUtils.ErrorUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Random;
 
 import static pl.dcbot.Managers.BootstrapManager.*;
@@ -27,19 +26,14 @@ public class DCLinkManager {
 
     public static void insertCode(Plugin plugin, String username, int code) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            try {
-                DatabaseManager.openConnection();
-                Statement statement = DatabaseManager.connection.createStatement();
+            DatabaseManager.openConnection();
 
-                String usun = "DELETE FROM `" + DatabaseManager.table + "` WHERE nick='" + username + "'";
-                String dodaj = "INSERT INTO `" + DatabaseManager.table + "` (nick, kod) VALUES ('" + username + "', " + code + ")";
+            String usun = "DELETE FROM `" + DatabaseManager.table + "` WHERE nick='" + username + "'";
+            String dodaj = "INSERT INTO `" + DatabaseManager.table + "` (nick, kod) VALUES ('" + username + "', " + code + ")";
 
-                statement.executeUpdate(usun);
-                statement.executeUpdate(dodaj);
-                statement.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+
+            DatabaseManager.get().executeStatement(usun);
+            DatabaseManager.get().executeStatement(dodaj);
         });
     }
 
@@ -47,16 +41,14 @@ public class DCLinkManager {
         insertCode(plugin, username, code);
     }
 
-    public static void registerDiscord(Plugin plugin, SlashCommandInteraction message, User user, int code) {
+    public static void registerDiscord(Plugin plugin, SlashCommandInteraction message, User user, long code) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
                 DatabaseManager.openConnection();
-                Statement discord = DatabaseManager.connection.createStatement();
                 String szukajkodu = "SELECT * FROM `discord` WHERE kod='" + code + "'";
-                discord.executeQuery(szukajkodu);
-                ResultSet result = discord.getResultSet();
+                ResultSet result = DatabaseManager.get().executeResultStatement(szukajkodu);
+
                 if (!result.next()) {
-                    discord.close();
                     result.close();
                     message.createImmediateResponder()
                             .setContent(LanguageManager.getMessage("dclink.wrong_code"))
@@ -64,22 +56,17 @@ public class DCLinkManager {
                 } else {
                     String nick = result.getString("nick");
                     DatabaseManager.openConnection();
-                    Statement rankstatement = DatabaseManager.connection.createStatement();
                     String rank = "SELECT ranga FROM `staty_s16` WHERE nick='" + nick + "'";
-                    rankstatement.executeQuery(rank);
-                    ResultSet result2 = rankstatement.getResultSet();
+                    ResultSet result2 = DatabaseManager.get().executeResultStatement(rank);
                     if (!result2.next()) {
-                        rankstatement.close();
-                        discord.close();
+                        result2.close();
                         result.close();
                         message.createImmediateResponder()
                                 .setContent(LanguageManager.getMessage("dclink.error") + " err_no_rank")
                                 .respond();
                     } else {
                         String finalRank = result2.getString("ranga");
-                        discord.executeUpdate("DELETE FROM `discord` WHERE kod='" + code + "'");
-                        rankstatement.close();
-                        discord.close();
+                        String usun = "DELETE FROM `discord` WHERE kod='" + code + "'";
                         if (finalRank.equalsIgnoreCase("Gracz")) {
                             user.addRole(server.getRoleById(role_gracz).get());
                             user.updateNickname(server, "[" + "Gracz" + "]" + nick, LanguageManager.getMessage("dclink.nickname_change_reason"));
@@ -106,8 +93,8 @@ public class DCLinkManager {
                             user.addRole(server.getRoleById(role_evip).get());
                             user.updateNickname(server, "[" + "EVIP" + "]" + nick, LanguageManager.getMessage("dclink.nickname_change_reason"));
                         } else {
-                            rankstatement.close();
-                            discord.close();
+                            result2.close();
+                            result.close();
                             message.createImmediateResponder()
                                     .setContent(LanguageManager.getMessage("dclink.error") + " err_wrong_rank " + finalRank)
                                     .respond();
@@ -120,10 +107,11 @@ public class DCLinkManager {
                                                 .replace("{user}", message.getUser().getMentionTag())
                                                 .replace("{minecraft}", nick))
                                 .respond();
+                        result.close();
                     }
-
-
+                    result.close();
                 }
+                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
                 ErrorUtil.logError(ErrorReason.DATABASE);

@@ -28,7 +28,6 @@ public class MusicManager {
     private static final Server server = api.getServerById(serwer).get();
 
     public static void playTrack(String track, SlashCommandInteraction command, ServerVoiceChannel voiceChannel) {
-
         command.respondLater();
         String graj;
         AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
@@ -40,7 +39,9 @@ public class MusicManager {
             graj = track;
             String finalGraj = graj;
             if (voiceChannel.isConnected(api.getYourself())) {
-                AudioConnection audioConnection = server.getAudioConnection().get();
+
+                AudioConnection audioConnection = voiceChannel.getServer().getAudioConnection().get();
+
                 audioConnection.setAudioSource(source);
 
                 playerManager.loadItem(finalGraj, new AudioLoadResultHandler() {
@@ -69,7 +70,7 @@ public class MusicManager {
                     }
                 });
             } else {
-                voiceChannel.connect().thenAccept(audioConnection -> {
+                voiceChannel.connect(false, false).thenAccept(audioConnection -> {
                     audioConnection.setAudioSource(source);
 
                     playerManager.loadItem(finalGraj, new AudioLoadResultHandler() {
@@ -145,7 +146,7 @@ public class MusicManager {
                     ResultManager.sendResult(command, ResultReason.ERROR, null, null);
                 }
             } else {
-                voiceChannel.connect().thenAccept(audioConnection -> {
+                voiceChannel.connect(false, false).thenAcceptAsync(audioConnection -> {
                     AudioTrack at = null;
                     if (results != null && results.length > 0) {
                         at = results[0];
