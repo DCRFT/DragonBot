@@ -56,7 +56,7 @@ public class DCLinkManager {
                 } else {
                     String nick = result.getString("nick");
                     DatabaseManager.openConnection();
-                    String rank = "SELECT ranga FROM `staty_s16` WHERE nick='" + nick + "'";
+                    String rank = "SELECT ranga FROM `staty_ogolem` WHERE nick='" + nick + "'";
                     ResultSet result2 = DatabaseManager.get().executeResultStatement(rank);
                     if (!result2.next()) {
                         result2.close();
@@ -67,6 +67,7 @@ public class DCLinkManager {
                     } else {
                         String finalRank = result2.getString("ranga");
                         String usun = "DELETE FROM `discord` WHERE kod='" + code + "'";
+                        DatabaseManager.get().executeStatement(usun);
                         if (finalRank.equalsIgnoreCase("Gracz")) {
                             user.addRole(server.getRoleById(role_gracz).get());
                             user.updateNickname(server, "[" + "Gracz" + "]" + nick, LanguageManager.getMessage("dclink.nickname_change_reason"));
