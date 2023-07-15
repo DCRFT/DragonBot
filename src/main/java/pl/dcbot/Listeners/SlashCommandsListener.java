@@ -104,8 +104,8 @@ public class SlashCommandsListener implements SlashCommandCreateListener {
             String date1 = dataFormat.format(date);
             EmbedBuilder embed = new EmbedBuilder()
                     .setAuthor(LanguageManager.getMessage("potw.embed.author"))
-                    .addField(LanguageManager.getMessage("potw.embed.field1.name"), "potw.embed.field1.value" + " " + date1 + " " + user.getIdAsString())
-                    .addField(LanguageManager.getMessage("potw.embed.field2.name"), "potw.embed.field2.value")
+                    .addField(LanguageManager.getMessage("potw.embed.field1.name"), LanguageManager.getMessage("potw.embed.field1.value") + " " + date1 + " " + user.getIdAsString())
+                    .addField(LanguageManager.getMessage("potw.embed.field2.name"), LanguageManager.getMessage("potw.embed.field2.value"))
                     .setColor(Color.RED)
                     .setFooter(plugin.getConfig().getString("embeds.footer.text")
                                     .replace("{version}", plugin.getDescription().getVersion()).replace("{time}", time),
