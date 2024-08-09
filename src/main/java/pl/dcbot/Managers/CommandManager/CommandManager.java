@@ -27,13 +27,9 @@ public class CommandManager implements CommandExecutor {
 
     private static final DragonBot plugin = DragonBot.getInstance();
 
+    // TODO remove that completely and do it using bot bridge. Maybe add some admin commands instead?
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        /*if (cmd.getName().equalsIgnoreCase("testowa")) {
-            if(sender.hasPermission("test.adm")){
-                ReportManager.testClosing();
-            }
-        }*/
         if (cmd.getName().equalsIgnoreCase("discord")) {
             MessageManager.sendMessageList(sender, "command.discord");
         }

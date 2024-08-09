@@ -19,51 +19,63 @@ public class MessageManager {
             ((CommandSender) player).sendMessage(ColorUtil.colorize(LanguageManager.getMessage(key)));
         }
     }
+
     public static void sendMessage(SlashCommandInteraction command, String key) {
         command.createImmediateResponder()
                 .setContent(LanguageManager.getMessage(key))
                 .respond();
     }
+
     public static void sendRawMessage(SlashCommandInteraction command, String message) {
         command.createImmediateResponder()
                 .setContent(message)
                 .respond();
     }
+
     public static void sendFollowupMessage(SlashCommandInteraction command, String key) {
-        command.createImmediateResponder()
+        command.createFollowupMessageBuilder()
                 .setContent(LanguageManager.getMessage(key))
-                .respond();
+                .send().join();
     }
+
     public static void sendRawFollowupMessage(SlashCommandInteraction command, String message) {
-        command.createImmediateResponder()
+        command.createFollowupMessageBuilder()
                 .setContent(message)
-                .respond();
+                .send().join();
     }
+
     public static void sendMessage(SelectMenuInteraction menu, String key) {
         menu.createImmediateResponder()
                 .setContent(LanguageManager.getMessage(key))
                 .respond();
     }
+
     public static void sendRawMessage(SelectMenuInteraction menu, String message) {
         menu.createImmediateResponder()
                 .setContent(message)
                 .respond();
     }
+
     public static void sendMessage(User user, String message) {
         user.sendMessage(message);
     }
+
     public static void sendMessage(User user, EmbedBuilder embed) {
         user.sendMessage(embed);
     }
+
     public static void sendMessage(TextChannel textChannel, EmbedBuilder embed) {
         textChannel.sendMessage(embed);
     }
+
     public static void sendRawMessage(TextChannel textChannel, String message) {
         textChannel.sendMessage(message);
     }
+
     public static void sendMessage(TextChannel textChannel, String key) {
         textChannel.sendMessage(LanguageManager.getMessage("key"));
     }
+
     public static void sendMessageList(Object player, String key) {
         for (final String msg : LanguageManager.getMessageList(key)) {
             if (player instanceof Player) {

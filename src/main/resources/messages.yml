@@ -6,11 +6,11 @@ activity:
   connecting: "Uruchamianie..."
   restart: "Wyłączanie..."
 connection:
-  connected: "§aPołączono z Discordem jako"
-  disconnected: "§cNie można zalogować się do Discord! Wyłączanie..."
+  connected: "Połączono z Discordem jako"
+  disconnected: "Nie można zalogować się do Discord! Wyłączanie..."
   bootstrap:
-    connecting: "§aSprawdzanie serwera Discord..."
-    error: "§cWystąpił błąd podczas sprawdzania."
+    connecting: "Sprawdzanie serwera Discord..."
+    error: "Wystąpił błąd podczas sprawdzania."
 pluginhelp:
   contents:
   - "§e» §6/dcb przeladuj§3 - przeładowuje config"
@@ -113,31 +113,6 @@ potw:
     field2:
       name: "Prosimy nie odpisywać na tę wiadomość, gdyż jej nie zobaczymy."
       value: "Jeśli chcesz się z nami skontaktować, utwórz zgłoszenie na naszym serwerze Discord."
-music:
-  play:
-    error: "❗│ Wystąpił błąd."
-    no_results: "❗│ Nie znaleziono wyników."
-    success: "▶️│ Odtwarzam"
-    no_track: "❗│ Podaj nazwę utworu, którego chcesz posłuchać."
-    no_vc: "❗│ Aby odtwarzać muzykę, musisz być na tym samym kanale głosowym."
-    already_playing_other_channel: "❗│ Musisz być na tym samym kanale co ja, gdy jestem już połączony!"
-  stop:
-    no_vc: "❗│ Aby zatrzymać muzykę, musisz być na tym samym kanale głosowym."
-    no_vc_bot: "❗│ Nie jestem na żadnym kanale głosowym lub nie jesteś na nim ze mną!"
-    success: "❗│ Zatrzymano"
-  quit:
-    no_vc: "❗│ Aby kazać mi wyjść, musisz być na kanale tym samym głosowym."
-    no_vc_bot: "❗│ Nie jestem na żadnym kanale głosowym lub nie jesteś na nim ze mną!"
-    success: "❗│ Wyszedłem!"
-  pause:
-    no_vc: "❗│ Aby kazać mi wstrzymać utwór, musisz być na tym samym kanale głosowym."
-    no_vc_bot: "❗│ Nie jestem na żadnym kanale głosowym lub nie jesteś na nim ze mną!"
-    success: "❗│ Wstrzymano!"
-  resume:
-    no_vc: "❗│ Aby kazać mi wznowić utwór, musisz być na  tym samymkanale głosowym."
-    no_vc_bot: "❗│ Nie jestem na żadnym kanale głosowym lub nie jesteś na nim ze mną!"
-    not_paused: "❗│ Nie wstrzymuję żadnego utworu."
-    success: "❗│ Wznowiono!"
 dclink:
   wrong_channel: "❗│ Aby się zarejestrować, użyj kanału {rejestracja}."
   wrong_message: "Hej {user}! Twoja wiadomość została usunięta, gdyż kanał należy wyłącznie do rejestracji. Użyj komendy /dclink kod, aby się zarejestrować. Jeśli potrzebujesz pomocy, zobacz {rejestracja_pomoc}."
@@ -150,7 +125,7 @@ cake: "\uD83E\uDD6E Mniam!"
 code:
   success: "Twój kod:"
   error: "Wygenerowałeś już kod!"
-ping: "Hej! **Jestem DragonBot**!\n\n**Jestem tu po to, by**:\n » powitać Cię, gdy wejdziesz na serwer,\n » połączyć twoje konto na serwerze Minecraft z kontem na Discord,\n » powiadomić Cię, gdy dostaniesz bana lub zostaniesz wyrzucony z serwera Discord,\n » odtwarzać dla Ciebie muzykę (zob. kanał {bot}\n » upiec Ci ciasto po /cake."
+ping: "Hej! **Jestem DragonBot**!\n\n**Jestem tu po to, by**:\n » powitać Cię, gdy wejdziesz na serwer,\n » połączyć twoje konto na serwerze Minecraft z kontem na Discord,\n » powiadomić Cię, gdy dostaniesz bana lub zostaniesz wyrzucony z serwera Discord,\n » Zarządzać twoimi rolami - zobacz {role}\n » upiec Ci ciasto po /cake."
 delete: "Usunięto kod użytkownika:"
 discord_commands:
   ban:
@@ -169,16 +144,6 @@ discord_commands:
     description: "Komenda do rejestracji."
   cake:
     description: "Upiecz ciasto."
-  play:
-    description: "Komenda do odtwarzania muzyki."
-  stop:
-    description: "Komenda do zatrzymania muzyki."
-  quit:
-    description: "Komenda do kazania DragonBotowi opuszczenia kanału."
-  pause:
-    description: "Komenda do wstrzymania muzyki."
-  resume:
-    description: "Komenda do wznowienia muzyki."
   user:
     name: "użytkownik"
     description: "Użytkownik"
@@ -200,9 +165,6 @@ discord_commands:
   code:
     name: "kod"
     description: "Kod z serwera Minecraft"
-  music:
-    name: "utwór"
-    description: "Nazwa utworu lub adres URL YouTube."
 menus:
   color:
     title: "Wybierz kolor"
@@ -227,7 +189,7 @@ menus:
       label: "Zmiany"
       description: "Nadaj powiedomienie o zmianach."
 plugin:
-  header: "§e--------------------------------------------"
-  footer: "§e--------------------------------------------"
-  enabled: "§aWłączono wersję §2"
-  disabled: "§cWyłączono wersję §2"
+  header: "--------------------------------------------"
+  footer: "--------------------------------------------"
+  enabled: "Włączono wersję "
+  disabled: "Wyłączono wersję "

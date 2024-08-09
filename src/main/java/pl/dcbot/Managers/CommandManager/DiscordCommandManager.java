@@ -9,7 +9,7 @@ import org.javacord.api.interaction.SlashCommandBuilder;
 import org.javacord.api.interaction.SlashCommandOption;
 import org.javacord.api.interaction.SlashCommandOptionType;
 import org.javacord.api.listener.message.MessageCreateListener;
-import pl.dcbot.DragonBot;
+import pl.dcbot.Managers.DiscordAPIManager;
 import pl.dcbot.Managers.LanguageManager;
 import pl.dcbot.Managers.MessageManager;
 
@@ -22,7 +22,7 @@ import static pl.dcbot.Managers.BootstrapManager.*;
 
 public class DiscordCommandManager implements MessageCreateListener {
 
-    private static final DiscordApi api = DragonBot.getApi();
+    private static final DiscordApi api = DiscordAPIManager.getApi();
 
     static final Server server = api.getServerById(serwer).get();
 
@@ -281,7 +281,7 @@ public class DiscordCommandManager implements MessageCreateListener {
                 e.getMessage().delete();
             } else if (e.getMessage().getMentionedUsers().contains(api.getYourself())) {
                 MessageManager.sendRawMessage(e.getChannel(), LanguageManager.getMessage("ping")
-                        .replace("{bot}", server.getTextChannelById(channel_bot).get().getMentionTag()));
+                        .replace("{role}", server.getTextChannelById(channel_role).get().getMentionTag()));
             }
         }
     }

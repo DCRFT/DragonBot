@@ -25,6 +25,7 @@ serverconfig:
     logi:
   voicechannels:
     prywatne:
+    playercount:
   categories:
     prywatne:
     zgl_otwarte:

@@ -9,8 +9,8 @@
     <version>5.0</version>
 
     <properties>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
     </properties>
 
     <repositories>
@@ -37,24 +37,56 @@
             <id>jitpack</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>AlessioDP</id>
+            <url>https://repo.alessiodp.com/releases/</url>
+        </repository>
+        <repository>
+            <id>maven-snapshots</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>lavalink-repo</id>
+            <name>Lavalink Maven Repo</name>
+            <url>https://maven.lavalink.dev/releases</url>
+        </repository>
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.11.6</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alessiodp.libby</groupId>
+            <artifactId>libby-bukkit</artifactId>
+            <version>2.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.4.5</version>
+            <version>1.4.12</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
             <version>4.0.3</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.javacord</groupId>
             <artifactId>javacord</artifactId>
             <version>3.8.0</version>
             <type>pom</type>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -63,9 +95,22 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.walkyst</groupId>
-            <artifactId>lavaplayer-fork</artifactId>
-            <version>1.4.2</version>
+            <groupId>dev.arbjerg</groupId>
+            <artifactId>lavaplayer</artifactId>
+            <version>2.2.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>dev.lavalink.youtube</groupId>
+            <artifactId>v2</artifactId>
+            <version>1.5.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.17.2</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
     <scm>
@@ -87,6 +132,30 @@
         </resources>
         <plugins>
             <plugin>
+                <groupId>com.github.Azim</groupId>
+                <artifactId>azimdp-maven-plugin</artifactId>
+                <version>1.0.1</version>
+                <configuration>
+                    <ignoreVersions>true</ignoreVersions>
+                    <beautify>true</beautify>
+                    <path>depends.json</path>
+                    <excludes>
+                        <exclude>org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT</exclude>
+                        <exclude>net.byteflux.libby-bukkit:1.3.1</exclude>
+                        <exclude>net.byteflux:libby-core:1.3.1</exclude>
+                        <exclude>net.byteflux:libby:1.3.1</exclude>
+                        <exclude>me.clip:placeholderapi:2.11.6</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate-dependency-list</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.3.0</version>
@@ -95,26 +164,15 @@
                     <shadedArtifactAttached>true</shadedArtifactAttached>
                     <shadedClassifierName>fat</shadedClassifierName>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <artifactSet>
-                        <!-- TODO: check that & reduce jar size: !-->
-                        <includes>
-                            <include>org.javacord:*</include>
-                            <include>com.fasterxml.jackson.core:jackson-databind</include>
-                            <include>com.fasterxml.jackson.core:jackson-core</include>
-                            <include>com.fasterxml.jackson.core:jackson-annotations</include>
-                            <include>io.vavr:vavr</include>s
-                            <include>com.squareup.okhttp3:okhttp</include>
-                            <include>org.jetbrains.kotlin:kotlin-stdlib</include>
-                            <include>org.jetbrains.kotlin:kotlin-annotations</include>
-                            <include>com.squareup.okio:okio</include>
-                            <include>com.squareup.okhttp3:logging-interceptor</include>
-                            <include>com.neovisionaries:nv-websocket-client</include>
-                            <include>com.codahale:xalsa20poly1305</include>
-                            <include>org.apache.logging.log4j:log4j-api</include>
-                        </includes>
-                    </artifactSet>
+                    <relocations>
+                        <relocation>
+                            <pattern>net.byteflux.libby</pattern>
+                            <shadedPattern>yourPackage.libs.net.byteflux.libby</shadedPattern>
+                        </relocation>
+                    </relocations>
                     <transformers>
-                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <manifestEntries>
                                 <Main-Class>pl.dcbot.DragonBot</Main-Class>
                             </manifestEntries>
@@ -138,6 +196,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <minimizeJar>true</minimizeJar>
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>
@@ -157,22 +216,6 @@
                     </execution>
                 </executions>
             </plugin>
-           <!-- <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <configuration>
-                            <tasks>
-                                <copy file="target/${project.artifactId}-${project.version}-b${buildNumber}-fat.jar" tofile="/home/nick/Dokumenty/DragonCraft/DragonBot5/plugins/DragonBot.jar"/>
-                            </tasks>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin> !-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -205,6 +248,7 @@
                     <revisionOnScmFailure>unknownbuild</revisionOnScmFailure>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 

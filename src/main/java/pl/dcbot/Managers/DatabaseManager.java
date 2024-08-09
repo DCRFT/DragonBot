@@ -46,12 +46,12 @@ public class DatabaseManager {
                 ds.setPassword(password);
                 ds.addDataSourceProperty("useSSL", "false");
                 ds.addDataSourceProperty("verifyServerCertificate", "false");
-                ds.addDataSourceProperty("characterEncoding","UTF-8");
-                ds.addDataSourceProperty("useUnicode","true");
+                ds.addDataSourceProperty("characterEncoding", "UTF-8");
+                ds.addDataSourceProperty("useUnicode", "true");
                 ds.setConnectionInitSql("SET NAMES utf8mb4");
                 ds.setMaximumPoolSize(4);
 
-                synchronized(plugin) {
+                synchronized (plugin) {
                     if (getConnection() == null || getConnection().isClosed()) {
                         connection = ds.getConnection();
                     }
@@ -62,16 +62,16 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+
     public static void closeConnection() {
-                try {
-                    if (getConnection() == null || getConnection().isClosed()) {
-                        getConnection().close();
-                        ds.close();
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    ErrorUtil.logError(ErrorReason.DATABASE);
-                }
+        try {
+            if (getConnection() == null || getConnection().isClosed()) return;
+            getConnection().close();
+            ds.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ErrorUtil.logError(ErrorReason.DATABASE);
+        }
     }
 
     private CachedRowSet createCachedRowSet() throws SQLException {
@@ -116,7 +116,7 @@ public class DatabaseManager {
 
     public static Connection getConnection() {
         try {
-            if(connection != null && !connection.isClosed() && ds.isRunning()) {
+            if (connection != null && !connection.isClosed() && ds.isRunning()) {
                 return connection;
             }
         } catch (SQLException e) {

@@ -1,5 +1,6 @@
 package pl.dcbot.Managers;
 
+import org.bukkit.entity.Player;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.entity.activity.ActivityType;
@@ -12,6 +13,7 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.UserStatus;
 import pl.dcbot.DragonBot;
+import pl.dcbot.Listeners.*;
 import pl.dcbot.Managers.CommandManager.DiscordCommandManager;
 import pl.dcbot.Utils.ErrorUtils.ErrorReason;
 import pl.dcbot.Utils.ErrorUtils.ErrorUtil;
@@ -44,7 +46,7 @@ public class BootstrapManager {
     public static final long channel_zgloszenia = plugin.getConfig().getLong("serverconfig.channels.zgloszenia");
     public static final long channel_propozycje = plugin.getConfig().getLong("serverconfig.channels.propozycje");
 
-    public static final long channel_pingi = plugin.getConfig().getLong("serverconfig.channels.role");
+    public static final long channel_role = plugin.getConfig().getLong("serverconfig.channels.role");
     public static final long channel_colors = plugin.getConfig().getLong("serverconfig.channels.colors");
     public static final long channel_ogloszenia = plugin.getConfig().getLong("serverconfig.channels.ogloszenia");
     public static final long channel_zmiany = plugin.getConfig().getLong("serverconfig.channels.zmiany");
@@ -53,6 +55,7 @@ public class BootstrapManager {
     public static final long channel_logi = plugin.getConfig().getLong("serverconfig.channels.logi");
 
     public static final long voicechannel_prywatne = plugin.getConfig().getLong("serverconfig.voicechannels.prywatne");
+    public static final long voicechannel_playercount = plugin.getConfig().getLong("serverconfig.voicechannels.playercount");
 
     public static final long category_prywatne = plugin.getConfig().getLong("serverconfig.categories.prywatne");
     public static final long category_zgl_otwarte = plugin.getConfig().getLong("serverconfig.categories.zgl_otwarte");
@@ -94,11 +97,11 @@ public class BootstrapManager {
 
     public static Server server;
 
-    public static DiscordApi api = DragonBot.getApi();
+    public static DiscordApi api = DiscordAPIManager.getApi();
 
     public static boolean bootstrap() {
 
-        api = DragonBot.getApi();
+        api = DiscordAPIManager.getApi();
 
         List<Long> channels = Arrays.asList(
                 channel_rejestracja,
@@ -114,14 +117,16 @@ public class BootstrapManager {
                 channel_wiadpotw,
                 channel_zgloszenia,
                 channel_propozycje,
-                channel_pingi,
+                channel_role,
                 channel_colors,
                 channel_ogloszenia,
                 channel_eventy,
                 channel_zmiany,
                 channel_testowy,
                 channel_logi);
-        List<Long> vcs = Collections.singletonList(voicechannel_prywatne);
+        List<Long> vcs = Arrays.asList(
+                voicechannel_prywatne,
+                voicechannel_playercount);
         List<Long> categories = Arrays.asList(
                 category_prywatne,
                 category_zgl_otwarte,
@@ -275,7 +280,7 @@ public class BootstrapManager {
                         plugin.getConfig().getString("embeds.footer.icon"))).addComponents(ActionRow.of(
                              selectMenu
                         )
-                ).send(server.getTextChannelById(channel_pingi).get()).get().getId();
+                ).send(server.getTextChannelById(channel_role).get()).get().getId();
 
                 ConfigManager.getDataFile().set("ids.roles", roles_id);
                 plugin.saveConfig();
@@ -328,6 +333,8 @@ public class BootstrapManager {
         discordApi.updateActivity(ActivityType.STREAMING, plugin.getConfig().getString("bot.description").replaceAll("\\{version}", plugin.getDescription().getVersion()));
         plugin.getLogger().info(LanguageManager.getMessage("connection.connected") + " " + discordApi.getYourself().getDiscriminatedName());
         ConfigManager.saveData();
+
+        PlayerCountManager.startRefreshing();
     }
     public static void reconnect() {
         disconnect();
@@ -338,7 +345,7 @@ public class BootstrapManager {
                     .setToken(plugin.getConfig().getString("bot.token"))
                     .setAllIntents()
                     .login()
-                    .thenAccept(plugin::onConnectToDiscord)
+                    .thenAccept(BootstrapManager::onConnectToDiscord)
                     .exceptionally(error -> {
                         plugin.getLogger().warning(LanguageManager.getMessage("connection.disconnected"));
                         error.printStackTrace();
@@ -351,8 +358,23 @@ public class BootstrapManager {
         if (api != null) {
             api.updateStatus(UserStatus.DO_NOT_DISTURB);
             api.updateActivity(LanguageManager.getMessage("activity.restart"));
-            api.disconnect();
-            DragonBot.clearApi();
+            api.disconnect().join();
+            DiscordAPIManager.clearApi();
         }
+    }
+
+    public static void onConnectToDiscord(DiscordApi api) {
+        DiscordAPIManager.setApi(api);
+        api.addListener(new DiscordCommandManager());
+        api.addListener(new ServerMemberJoinListener());
+        api.addListener(new DirectMessageListener());
+        api.addListener(new ServerBanListener());
+        api.addListener(new ServerVoiceChannelListener());
+        api.addListener(new MessageCreateListener());
+        api.addSlashCommandCreateListener(new SlashCommandsListener());
+        api.addMessageComponentCreateListener(new MessageComponentCreateListener());
+        api.addSelectMenuChooseListener(new SelectMenuListener());
+
+        BootstrapManager.initialize(api);
     }
 }

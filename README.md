@@ -8,7 +8,7 @@ Features:\
 • link Minecraft account to Discord server,\
 • moderation commands,\
 • bot status,\
-• YouTube music player,\
+~~• YouTube music player,~~ (since our servers are hosted on HETZNER, this is not going to work anymore) ,\
 • tickets/suggestions system with votes.\
 • role menu.\
 • auto user voice channels,\
