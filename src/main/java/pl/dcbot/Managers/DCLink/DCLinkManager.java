@@ -12,6 +12,7 @@ import pl.dcbot.Utils.ErrorUtils.ErrorUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
 import static pl.dcbot.Managers.BootstrapManager.*;
 
@@ -52,7 +53,7 @@ public class DCLinkManager {
                     result.close();
                     message.createImmediateResponder()
                             .setContent(LanguageManager.getMessage("dclink.wrong_code"))
-                            .respond();
+                            .respond().join();
                 } else {
                     String nick = result.getString("nick");
                     DatabaseManager.openConnection();
@@ -63,43 +64,44 @@ public class DCLinkManager {
                         result.close();
                         message.createImmediateResponder()
                                 .setContent(LanguageManager.getMessage("dclink.error") + " err_no_rank")
-                                .respond();
+                                .respond().join();
                     } else {
                         String finalRank = result2.getString("ranga");
                         String usun = "DELETE FROM `discord` WHERE kod='" + code + "'";
                         DatabaseManager.get().executeStatement(usun);
                         if (finalRank.equalsIgnoreCase("Gracz")) {
-                            user.addRole(server.getRoleById(role_gracz).get());
-                            user.updateNickname(server, "[" + "Gracz" + "]" + nick, LanguageManager.getMessage("dclink.nickname_change_reason"));
+                            user.addRole(server.getRoleById(role_gracz).get()).join();
+                            user.updateNickname(server, "Gracz | " + nick, LanguageManager.getMessage("dclink.nickname_change_reason")).join();
                         } else if (finalRank.equalsIgnoreCase("VIP") || finalRank.equalsIgnoreCase("VIP+")) {
-                            user.removeRole(server.getRoleById(role_gracz).get());
-                            user.addRole(server.getRoleById(role_vip).get());
-                            user.updateNickname(server, "[" + "VIP" + "]" + nick, LanguageManager.getMessage("dclink.nickname_change_reason"));
+                            user.removeRole(server.getRoleById(role_gracz).get()).join();;
+                            user.addRole(server.getRoleById(role_vip).get()).join();
+                            user.updateNickname(server, "VIP | " + nick, LanguageManager.getMessage("dclink.nickname_change_reason")).join();
                         } else if (finalRank.equalsIgnoreCase("SVIP") || finalRank.equalsIgnoreCase("SVIP+")) {
-                            user.removeRole(server.getRoleById(role_gracz).get());
-                            user.removeRole(server.getRoleById(role_vip).get());
-                            user.addRole(server.getRoleById(role_svip).get());
-                            user.updateNickname(server, "[" + "SVIP" + "]" + nick, LanguageManager.getMessage("dclink.nickname_change_reason"));
+                            user.removeRole(server.getRoleById(role_gracz).get()).join();
+                            user.removeRole(server.getRoleById(role_vip).get()).join();
+                            user.addRole(server.getRoleById(role_svip).get()).join();
+                            user.updateNickname(server, "SVIP | " + nick, LanguageManager.getMessage("dclink.nickname_change_reason")).join();
                         } else if (finalRank.equalsIgnoreCase("MVIP") || finalRank.equalsIgnoreCase("MVIP+")) {
-                            user.removeRole(server.getRoleById(role_gracz).get());
-                            user.removeRole(server.getRoleById(role_vip).get());
-                            user.removeRole(server.getRoleById(role_svip).get());
-                            user.addRole(server.getRoleById(role_mvip).get());
-                            user.updateNickname(server, "[" + "MVIP" + "]" + nick, LanguageManager.getMessage("dclink.nickname_change_reason"));
+                            user.removeRole(server.getRoleById(role_gracz).get()).join();
+                            user.removeRole(server.getRoleById(role_vip).get()).join();
+                            user.removeRole(server.getRoleById(role_svip).get()).join();
+                            user.addRole(server.getRoleById(role_mvip).get()).join();
+                            user.updateNickname(server, "MVIP | " + nick, LanguageManager.getMessage("dclink.nickname_change_reason")).join();
                         } else if (finalRank.equalsIgnoreCase("EVIP") || finalRank.equalsIgnoreCase("EVIP+")) {
-                            user.removeRole(server.getRoleById(role_gracz).get());
-                            user.removeRole(server.getRoleById(role_vip).get());
-                            user.removeRole(server.getRoleById(role_svip).get());
-                            user.removeRole(server.getRoleById(role_mvip).get());
-                            user.addRole(server.getRoleById(role_evip).get());
-                            user.updateNickname(server, "[" + "EVIP" + "]" + nick, LanguageManager.getMessage("dclink.nickname_change_reason"));
+                            user.removeRole(server.getRoleById(role_gracz).get()).join();
+                            user.removeRole(server.getRoleById(role_vip).get()).join();
+                            user.removeRole(server.getRoleById(role_svip).get()).join();
+                            user.removeRole(server.getRoleById(role_mvip).get()).join();
+                            user.addRole(server.getRoleById(role_evip).get()).join();
+                            user.updateNickname(server, "EVIP | " + nick, LanguageManager.getMessage("dclink.nickname_change_reason")).join();
                         } else {
                             result2.close();
                             result.close();
                             message.createImmediateResponder()
                                     .setContent(LanguageManager.getMessage("dclink.error") + " err_wrong_rank " + finalRank)
-                                    .respond();
+                                    .respond().join();
                         }
+                        user.removeRole(api.getRoleById(role_niezarejestrowany).get()).join();
                         result2.close();
                         result.close();
                         message.createImmediateResponder()
@@ -107,7 +109,7 @@ public class DCLinkManager {
                                         LanguageManager.getMessage("dclink.success")
                                                 .replace("{user}", message.getUser().getMentionTag())
                                                 .replace("{minecraft}", nick))
-                                .respond();
+                                .respond().join();
                         result.close();
                     }
                     result.close();
@@ -118,7 +120,7 @@ public class DCLinkManager {
                 ErrorUtil.logError(ErrorReason.DATABASE);
                 message.createImmediateResponder()
                         .setContent(LanguageManager.getMessage("dclink.error") + " err_mysql")
-                        .respond();
+                        .respond().join();
             }
         });
     }

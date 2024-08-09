@@ -79,7 +79,10 @@ public class ReportManager {
                     .addComponents(ActionRow.of(
                             Button.danger(
                                     plugin.getConfig().getString("embeds.reports.new_report.button.id"),
-                                    plugin.getConfig().getString("embeds.reports.new_report.button.label"))))
+                                    plugin.getConfig().getString("embeds.reports.new_report.button.label")),
+                            Button.primary(
+                                    plugin.getConfig().getString("embeds.reports.new_report.claim.id"),
+                                    plugin.getConfig().getString("embeds.reports.new_report.claim.label"))))
                     .send(report).get().getId();
         } catch (InterruptedException | ExecutionException err) {
             err.printStackTrace();
@@ -200,11 +203,38 @@ public class ReportManager {
         }
 
 
+    public static void sendClaim(MessageComponentInteraction message, ServerTextChannel channel, User user, String time) {
+        message.createOriginalMessageUpdater().addComponents(ActionRow.of(
+                new ButtonBuilder()
+                        .setLabel(plugin.getConfig().getString("embeds.reports.new_report.button.label"))
+                        .setCustomId(plugin.getConfig().getString("embeds.reports.new_report.button.id"))
+                        .setStyle(ButtonStyle.DANGER)
+                        .setDisabled(false)
+                        .build(),
+                new ButtonBuilder()
+                        .setLabel(plugin.getConfig().getString("embeds.reports.new_report.claim.label"))
+                        .setCustomId(plugin.getConfig().getString("embeds.reports.new_report.claim.id"))
+                        .setStyle(ButtonStyle.PRIMARY)
+                        .setDisabled(false)
+                        .build()
+        )).update().join();
+
+        EmbedBuilder embed = new EmbedBuilder()
+                .setAuthor(plugin.getConfig().getString("embeds.reports.new_report.claim.embed.author") + channel.getTopic())
+                .addField(plugin.getConfig().getString("embeds.reports.new_report.claim.embed.field1.name"), user.getDisplayName(server))
+                .setColor(Color.CYAN)
+                .setFooter(plugin.getConfig().getString("embeds.footer.text")
+                                .replace("{version}", plugin.getDescription().getVersion()).replace("{time}", time),
+                        plugin.getConfig().getString("embeds.footer.icon"));
+        channel.sendMessage(embed);
+    }
+
+
+
     public static void closeSuggestion(MessageComponentInteraction message, ServerTextChannel channel, User user, SuggestionCloseReason reason, String time) {
 
-
-        int upvotes = ConfigManager.getDataFile().getInt("ids.suggestion." + message.getChannel().get().getId() + ".upvotes");
-        int downvotes = ConfigManager.getDataFile().getInt("ids.suggestion." + message.getChannel().get().getId() + ".downvotes");
+        int upvotes = message.getMessage().getReactionByEmoji(server.getCustomEmojiById(emoji_plus_jeden).get()).get().getCount() - 1;
+        int downvotes = message.getMessage().getReactionByEmoji(server.getCustomEmojiById(emoji_minus_jeden).get()).get().getCount() - 1;
 
         message.getMessage().removeAllReactions().join();
 
@@ -264,7 +294,6 @@ public class ReportManager {
                 }
             }
             server.getChannelCategoryById(category_propo_zamkniete).get().getChannels().get(iMin).delete("DragonBot reports cleanup.");
-            ConfigManager.getDataFile().set("ids.suggestion." + message.getChannel().get().getId(), null);
         }
 
         Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, () -> {

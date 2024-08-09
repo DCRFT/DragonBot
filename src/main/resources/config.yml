@@ -14,7 +14,8 @@ serverconfig:
     bot:
     banykicki:
     wiadpotw:
-    wsparcie:
+    zgloszenia:
+    propozycje:
     role:
     colors:
     ogloszenia:
@@ -45,6 +46,7 @@ serverconfig:
     moderator:
     viceadministrator:
     administrator:
+    opiekun:
     wlasciciel:
     rola_ogloszenia:
     rola_eventy:

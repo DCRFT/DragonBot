@@ -13,7 +13,6 @@ import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.UserStatus;
 import pl.dcbot.DragonBot;
 import pl.dcbot.Managers.CommandManager.DiscordCommandManager;
-import pl.dcbot.Managers.PunishmentManager.MuteManager;
 import pl.dcbot.Utils.ErrorUtils.ErrorReason;
 import pl.dcbot.Utils.ErrorUtils.ErrorUtil;
 
@@ -42,7 +41,9 @@ public class BootstrapManager {
     public static final long channel_bot = plugin.getConfig().getLong("serverconfig.channels.bot");
     public static final long channel_banykicki = plugin.getConfig().getLong("serverconfig.channels.banykicki");
     public static final long channel_wiadpotw = plugin.getConfig().getLong("serverconfig.channels.wiadpotw");
-    public static final long channel_wsparcie = plugin.getConfig().getLong("serverconfig.channels.wsparcie");
+    public static final long channel_zgloszenia = plugin.getConfig().getLong("serverconfig.channels.zgloszenia");
+    public static final long channel_propozycje = plugin.getConfig().getLong("serverconfig.channels.propozycje");
+
     public static final long channel_pingi = plugin.getConfig().getLong("serverconfig.channels.role");
     public static final long channel_colors = plugin.getConfig().getLong("serverconfig.channels.colors");
     public static final long channel_ogloszenia = plugin.getConfig().getLong("serverconfig.channels.ogloszenia");
@@ -62,6 +63,7 @@ public class BootstrapManager {
     public static final long emoji_plus_jeden = plugin.getConfig().getLong("serverconfig.emojis.plus_jeden");
     public static final long emoji_minus_jeden = plugin.getConfig().getLong("serverconfig.emojis.minus_jeden");
 
+    public static final long role_niezarejestrowany = plugin.getConfig().getLong("serverconfig.roles.niezarejestrowany");
     public static final long role_gracz = plugin.getConfig().getLong("serverconfig.roles.gracz");
     public static final long role_vip = plugin.getConfig().getLong("serverconfig.roles.vip");
     public static final long role_svip = plugin.getConfig().getLong("serverconfig.roles.svip");
@@ -71,13 +73,13 @@ public class BootstrapManager {
     public static final long role_moderator = plugin.getConfig().getLong("serverconfig.roles.moderator");
     public static final long role_viceadministrator = plugin.getConfig().getLong("serverconfig.roles.viceadministrator");
     public static final long role_administrator = plugin.getConfig().getLong("serverconfig.roles.administrator");
+    public static final long role_opiekun = plugin.getConfig().getLong("serverconfig.roles.opiekun");
+
     public static final long role_wlasciciel = plugin.getConfig().getLong("serverconfig.roles.wlasciciel");
 
     public static final long role_ogloszenia = plugin.getConfig().getLong("serverconfig.roles.rola_ogloszenia");
     public static final long role_eventy = plugin.getConfig().getLong("serverconfig.roles.rola_eventy");
     public static final long role_zmiany = plugin.getConfig().getLong("serverconfig.roles.rola_zmiany");
-
-    public static final long role_wyciszony = plugin.getConfig().getLong("serverconfig.roles.rola_wyciszony");
 
     public static final long role_color_default_pink = plugin.getConfig().getLong("serverconfig.roles.colors.default_pink");
     public static final long role_color_blue = plugin.getConfig().getLong("serverconfig.roles.colors.blue");
@@ -110,7 +112,8 @@ public class BootstrapManager {
                 channel_bot,
                 channel_banykicki,
                 channel_wiadpotw,
-                channel_wsparcie,
+                channel_zgloszenia,
+                channel_propozycje,
                 channel_pingi,
                 channel_colors,
                 channel_ogloszenia,
@@ -142,7 +145,6 @@ public class BootstrapManager {
                 role_ogloszenia,
                 role_eventy,
                 role_zmiany,
-                role_wyciszony,
 
                 role_color_default_pink,
                 role_color_blue,
@@ -209,27 +211,30 @@ public class BootstrapManager {
         Date date = new Date();
         String time = dateFormat.format(date);
 
-        if (!ConfigManager.getDataFile().getBoolean("created.channel_wsparcie")) {
+        if (!ConfigManager.getDataFile().getBoolean("created.channel_zgloszenia")) {
             try {
                 long id = new MessageBuilder().setEmbed(
-                new EmbedBuilder()
-                        .setAuthor(plugin.getConfig().getString("embeds.reports.author"))
-                        .addField(plugin.getConfig().getString("embeds.reports.field.name"), plugin.getConfig().getString("embeds.reports.field.value"))
-                        .setColor(Color.RED)
-                        .setFooter(plugin.getConfig().getString("embeds.footer.text")
-                                        .replace("{version}", plugin.getDescription().getVersion()).replace("{time}", time),
-                                plugin.getConfig().getString("embeds.footer.icon")))
+                                new EmbedBuilder()
+                                        .setAuthor(plugin.getConfig().getString("embeds.reports.author"))
+                                        .addField(plugin.getConfig().getString("embeds.reports.field.name"), plugin.getConfig().getString("embeds.reports.field.value"))
+                                        .setColor(Color.RED)
+                                        .setFooter(plugin.getConfig().getString("embeds.footer.text")
+                                                        .replace("{version}", plugin.getDescription().getVersion()).replace("{time}", time),
+                                                plugin.getConfig().getString("embeds.footer.icon")))
                         .addComponents(ActionRow.of(
                                 Button.success(
                                         plugin.getConfig().getString("embeds.reports.button.id"),
                                         plugin.getConfig().getString("embeds.reports.button.label"))))
-                        .send(server.getChannelById(channel_wsparcie).get().asServerTextChannel().get()).get().getId();
+                        .send(server.getChannelById(channel_zgloszenia).get().asServerTextChannel().get()).get().getId();
                 ConfigManager.getDataFile().set("ids.reports", id);
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
                 ErrorUtil.logError(ErrorReason.DISCORD);
             }
+            ConfigManager.getDataFile().set("created.channel_zgloszenia", true);
 
+        }
+        if (!ConfigManager.getDataFile().getBoolean("created.channel_propozycje")) {
             try {
                 long id = new MessageBuilder().setEmbed(
                         new EmbedBuilder()
@@ -243,13 +248,13 @@ public class BootstrapManager {
                                 Button.success(
                                         plugin.getConfig().getString("embeds.suggestions.button.id"),
                                         plugin.getConfig().getString("embeds.suggestions.button.label"))))
-                        .send(server.getChannelById(channel_wsparcie).get().asServerTextChannel().get()).get().getId();
+                        .send(server.getChannelById(channel_propozycje).get().asServerTextChannel().get()).get().getId();
                 ConfigManager.getDataFile().set("ids.suggestions", id);
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
                 ErrorUtil.logError(ErrorReason.DISCORD);
             }
-            ConfigManager.getDataFile().set("created.channel_wsparcie", true);
+            ConfigManager.getDataFile().set("created.channel_propozycje", true);
         }
 
         if (!ConfigManager.getDataFile().getBoolean("created.channel_pingi")) {
@@ -317,8 +322,7 @@ public class BootstrapManager {
             }
             ConfigManager.getDataFile().set("created.channel_colors", true);
         }
-        MuteManager.startListening();
-            DiscordCommandManager.registerCommands();
+        DiscordCommandManager.registerCommands();
 
         discordApi.updateStatus(UserStatus.ONLINE);
         discordApi.updateActivity(ActivityType.STREAMING, plugin.getConfig().getString("bot.description").replaceAll("\\{version}", plugin.getDescription().getVersion()));

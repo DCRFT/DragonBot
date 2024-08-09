@@ -67,11 +67,6 @@
             <artifactId>lavaplayer-fork</artifactId>
             <version>1.4.2</version>
         </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>2.14.1</version>
-        </dependency>
     </dependencies>
     <scm>
         <connection>scm:svn:http://127.0.0.1/dummy</connection>
@@ -86,7 +81,7 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
                 <includes>
-                    <include>*</include>
+                    <include>*.yml</include>
                 </includes>
             </resource>
         </resources>
@@ -99,10 +94,29 @@
                     <finalName>${project.artifactId}-${project.version}-b${buildNumber}-fat</finalName>
                     <shadedArtifactAttached>true</shadedArtifactAttached>
                     <shadedClassifierName>fat</shadedClassifierName>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <artifactSet>
+                        <!-- TODO: check that & reduce jar size: !-->
+                        <includes>
+                            <include>org.javacord:*</include>
+                            <include>com.fasterxml.jackson.core:jackson-databind</include>
+                            <include>com.fasterxml.jackson.core:jackson-core</include>
+                            <include>com.fasterxml.jackson.core:jackson-annotations</include>
+                            <include>io.vavr:vavr</include>s
+                            <include>com.squareup.okhttp3:okhttp</include>
+                            <include>org.jetbrains.kotlin:kotlin-stdlib</include>
+                            <include>org.jetbrains.kotlin:kotlin-annotations</include>
+                            <include>com.squareup.okio:okio</include>
+                            <include>com.squareup.okhttp3:logging-interceptor</include>
+                            <include>com.neovisionaries:nv-websocket-client</include>
+                            <include>com.codahale:xalsa20poly1305</include>
+                            <include>org.apache.logging.log4j:log4j-api</include>
+                        </includes>
+                    </artifactSet>
                     <transformers>
                         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <manifestEntries>
-                                <Main-Class>com.github.yourname.BotMain</Main-Class>
+                                <Main-Class>pl.dcbot.DragonBot</Main-Class>
                             </manifestEntries>
                         </transformer>
                     </transformers>
@@ -123,6 +137,23 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
+                        <configuration>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                        <exclude>natives/*win*/*</exclude>
+                                        <exclude>natives/*aarch*/*</exclude>
+                                        <exclude>natives/*musl*/*</exclude>
+                                        <exclude>natives/*arm*/*</exclude>
+                                        <exclude>natives/*x86/*</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -145,6 +176,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
                 <configuration>
                     <source>17</source>
                     <target>17</target>
@@ -157,7 +189,7 @@
                 <executions>
                     <execution>
                         <id>buildnumber</id>
-                        <phase>pre-clean</phase>
+                        <phase>validate</phase>
                         <goals>
                             <goal>create</goal>
                         </goals>

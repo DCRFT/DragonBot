@@ -23,7 +23,6 @@ public class ServerVoiceChannelListener implements ServerVoiceChannelMemberJoinL
                     .setCategory(e.getServer().getChannelCategoryById(category_prywatne).get())
                     .setName(e.getUser().getDisplayName(e.getServer()));
             svcb.addPermissionOverwrite(e.getUser(), new PermissionsBuilder().setAllAllowed().build());
-            svcb.addPermissionOverwrite(server.getRoleById(role_wyciszony).get(), new PermissionsBuilder().setDenied(PermissionType.SPEAK).build());
             try {
                 e.getUser().move(svcb.create().get());
             } catch (InterruptedException | ExecutionException err) {

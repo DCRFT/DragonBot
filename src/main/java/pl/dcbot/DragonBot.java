@@ -67,7 +67,6 @@ public class DragonBot extends JavaPlugin {
         api.addListener(new ServerMemberJoinListener());
         api.addListener(new DirectMessageListener());
         api.addListener(new ServerBanListener());
-        api.addListener(new ReactionListener());
         api.addListener(new ServerVoiceChannelListener());
         api.addListener(new MessageCreateListener());
         api.addSlashCommandCreateListener(new SlashCommandsListener());
