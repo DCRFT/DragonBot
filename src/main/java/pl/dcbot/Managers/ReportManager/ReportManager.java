@@ -4,8 +4,12 @@ import org.bukkit.Bukkit;
 import org.javacord.api.entity.channel.RegularServerChannel;
 import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.channel.ServerTextChannelBuilder;
+import org.javacord.api.entity.emoji.CustomEmoji;
+import org.javacord.api.entity.emoji.Emoji;
+import org.javacord.api.entity.emoji.KnownCustomEmoji;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageBuilder;
+import org.javacord.api.entity.message.Reaction;
 import org.javacord.api.entity.message.component.ActionRow;
 import org.javacord.api.entity.message.component.Button;
 import org.javacord.api.entity.message.component.ButtonBuilder;
@@ -232,11 +236,15 @@ public class ReportManager {
 
 
     public static void closeSuggestion(MessageComponentInteraction message, ServerTextChannel channel, User user, SuggestionCloseReason reason, String time) {
+//TODO fix or port to another java api as javacord is abandoned
 
-        int upvotes = message.getMessage().getReactionByEmoji(server.getCustomEmojiById(emoji_plus_jeden).get()).get().getCount() - 1;
-        int downvotes = message.getMessage().getReactionByEmoji(server.getCustomEmojiById(emoji_minus_jeden).get()).get().getCount() - 1;
+//        KnownCustomEmoji upEmoji = server.getCustomEmojiById(emoji_plus_jeden).get();
+//        KnownCustomEmoji downEmoji = server.getCustomEmojiById(emoji_minus_jeden).get();
+//
+//        int upvotes = message.getMessage().getReactionByEmoji(upEmoji).get().getCount() - 1;
+//        int downvotes = message.getMessage().getReactionByEmoji(downEmoji).get().getCount() - 1;
 
-        message.getMessage().removeAllReactions().join();
+//        message.getMessage().removeAllReactions().join();
 
         ButtonStyle style = ButtonStyle.SECONDARY;
         String label = plugin.getConfig().getString("embeds.suggestions.new_suggestion.button_close.closed.label");
@@ -268,8 +276,8 @@ public class ReportManager {
                 embed.addField(plugin.getConfig().getString("embeds.suggestions.new_suggestion.closed") , user.getDisplayName(server));
                 break;
         }
-        embed.addField(LanguageManager.getMessage("suggestions.upvotes"), String.valueOf(upvotes), true);
-        embed.addField(LanguageManager.getMessage("suggestions.downvotes"), String.valueOf(downvotes), true);
+//        embed.addField(LanguageManager.getMessage("suggestions.upvotes"), , true);
+//        embed.addField(LanguageManager.getMessage("suggestions.downvotes"), , true);
         message.createOriginalMessageUpdater().addComponents(ActionRow.of(
                 new ButtonBuilder()
                         .setLabel(label)

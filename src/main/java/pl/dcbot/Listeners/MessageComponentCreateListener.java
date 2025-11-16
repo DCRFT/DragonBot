@@ -49,7 +49,8 @@ public class MessageComponentCreateListener implements org.javacord.api.listener
                 && message.getChannel().get().asServerTextChannel().get().getCategory().get().getId() == category_propo_otwarte)) {
 
             if (message.getUser().getRoles(server).contains(server.getRoleById(role_wlasciciel).get()) ||
-                    message.getUser().getRoles(server).contains(server.getRoleById(role_opiekun).get())) {
+                    message.getUser().getRoles(server).contains(server.getRoleById(role_opiekun).get()) ||
+                    message.getUser().getRoles(server).contains(server.getRoleById(role_administrator).get())) {
 
                 SuggestionCloseReason reason = SuggestionCloseReason.CLOSED;
                 if (id.equalsIgnoreCase(plugin.getConfig().getString("embeds.suggestions.new_suggestion.button_accept.id"))) {

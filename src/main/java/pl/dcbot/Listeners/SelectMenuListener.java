@@ -1,5 +1,6 @@
 package pl.dcbot.Listeners;
 
+import org.bukkit.Bukkit;
 import org.javacord.api.entity.message.component.SelectMenuOption;
 import org.javacord.api.event.interaction.SelectMenuChooseEvent;
 import org.javacord.api.listener.interaction.SelectMenuChooseListener;
@@ -27,7 +28,11 @@ public class SelectMenuListener implements SelectMenuChooseListener {
                     e.getSelectMenuInteraction().getUser().addRole(server.getRoleById(role_zmiany).get());
                 }
             }
-            e.getSelectMenuInteraction().createImmediateResponder().respond();
+//            e.getSelectMenuInteraction().respondLater().join();
+            e.getInteraction().respondLater(true).thenAccept(updater -> {
+               updater.setContent("Role zostały zaktualizowane!").update().join();
+            });
+//            e.getSelectMenuInteraction().createImmediateResponder().respond().join();
         } else if (e.getSelectMenuInteraction().getCustomId().equalsIgnoreCase("colors")) {
 
             e.getSelectMenuInteraction().getUser().removeRole(server.getRoleById(role_color_default_pink).get());
